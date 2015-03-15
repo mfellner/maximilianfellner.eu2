@@ -1,6 +1,8 @@
+/* global ROOT_PROPS */
+
 require('bootstrap/less/bootstrap.less');
 
 require(['react'], function (React) {
-  const Body = React.createFactory(require('../jsx/body.jsx'));
-  React.render(Body(window.APP_PROPS), document);
+  const Root = React.createFactory(require('../jsx/root.jsx'));
+  React.render(Root(window.ROOT_PROPS), document.getElementById('main'));
 });

@@ -6,12 +6,12 @@ const Body = React.createFactory(require('../static/jsx/body'));
 
 router.get('/', function* (next) {
   const props = {
-    navItems: ['Home', 'About', 'Contact'],
+    navItems: config.navItems,
     scripts: config.allScripts(),
     styles: config.stylesheets
   };
 
-  this.body = React.renderToString(Body(props));
+  this.body = React.renderToStaticMarkup(Body(props));
 
   yield next;
 });

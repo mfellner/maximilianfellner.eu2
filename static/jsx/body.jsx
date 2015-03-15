@@ -1,5 +1,5 @@
 const React = require('react');
-const NavBar = require('./nav-bar.jsx');
+const Root  = require('./root.jsx');
 
 /**
  * Component: Body
@@ -7,6 +7,9 @@ const NavBar = require('./nav-bar.jsx');
 class Body extends React.Component {
 
   render() {
+    const rootProps = {
+      navItems: this.props.navItems
+    };
     /* jshint ignore:start */
     return (
       <html lang="en">
@@ -18,21 +21,17 @@ class Body extends React.Component {
           );
         })}
         </head>
-        <body className="container">
-          <div className="row">
-            <NavBar className="col-md-2" items={this.props.navItems}/>
-            <div className="col-md-10">
-              <h3>Hello, Body component</h3>
-              <p>Lorem ipsum, dolor sit amet.</p>
-            </div>
-          </div>
+        <body>
+          <main id="main" className="container">
+            <Root {...rootProps}/>
+          </main>
           <script dangerouslySetInnerHTML={{
-            __html: 'var APP_PROPS = ' + JSON.stringify(this.props) + ';'
+            __html: 'var ROOT_PROPS = ' + JSON.stringify(rootProps) + ';'
           }}>
           </script>
         {this.props.scripts.map((script, i) => {
           return (
-            <script key={i} src={script}/>
+            <script key={i} src={script} defer={true}/>
           );
         })}
         </body>
@@ -43,15 +42,13 @@ class Body extends React.Component {
 }
 
 Body.propTypes = {
-  navItems: React.PropTypes.array.isRequired,
-  scripts : React.PropTypes.array,
-  styles  : React.PropTypes.array
+  scripts: React.PropTypes.array,
+  styles : React.PropTypes.array
 };
 
 Body.defaultProps = {
-  navItems: [],
-  scripts : [],
-  styles  : []
+  scripts: [],
+  styles : []
 };
 
 module.exports = Body;

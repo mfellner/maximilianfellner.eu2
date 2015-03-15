@@ -1,6 +1,9 @@
 const production = process.env.NODE_ENV === 'production';
 
 const config = {
+  navItems: [
+    'Home', 'About'
+  ],
   stylesheets: [
     '/main.min.css'
   ],
