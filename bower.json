@@ -1,0 +1,11 @@
+{
+  "name": "maximilianfellner.eu",
+  "version": "0.1.0",
+  "authors": [
+    "Maximilian Fellner <max.fellner@gmail.com>"
+  ],
+  "private": true,
+  "dependencies": {
+    "bootstrap": "~3.3.2"
+  }
+}
