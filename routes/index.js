@@ -1,5 +1,5 @@
 const router = require('koa-router')();
-const React = require('react');
+const React  = require('react');
 const config = require('../config/config');
 
 const Body = React.createFactory(require('../static/jsx/body'));

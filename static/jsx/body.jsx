@@ -1,5 +1,5 @@
 const React = require('react');
-const Root  = require('./root.jsx');
+const Root  = React.createFactory(require('./root.jsx'));
 
 /**
  * Component: Body
@@ -22,13 +22,12 @@ class Body extends React.Component {
         })}
         </head>
         <body>
-          <main id="main" className="container">
-            <Root {...rootProps}/>
-          </main>
+          <main id="main" className="container" dangerouslySetInnerHTML={{
+            __html: React.renderToString(Root(rootProps))
+          }}/>
           <script dangerouslySetInnerHTML={{
-            __html: 'var ROOT_PROPS = ' + JSON.stringify(rootProps) + ';'
-          }}>
-          </script>
+            __html: `var ROOT_PROPS = ${JSON.stringify(rootProps)};`
+          }}/>
         {this.props.scripts.map((script, i) => {
           return (
             <script key={i} src={script} defer={true}/>
