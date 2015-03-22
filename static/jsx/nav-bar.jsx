@@ -1,4 +1,6 @@
-const React = require('react');
+const Rx         = require('rx');
+const React      = require('react');
+const director   = require('director');
 
 /**
  * Component: NavBar
@@ -7,11 +9,22 @@ class NavBar extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {selected: this.props.selected};
+    this.state = {route: this.props.routes[this.props.selected]};
   }
 
-  handleClick(index) {
-    this.setState({selected: index});
+  componentDidMount() {
+    const currentRoute = new Rx.BehaviorSubject(this.state);
+
+    const router = new director.Router()
+      //.configure({html5history: true})
+      .init();
+
+    this.props.routes.forEach(route => {
+      const newState = {route: route};
+      router.on(route.path, currentRoute.onNext.bind(currentRoute, newState));
+    });
+
+    currentRoute.subscribe(this.setState.bind(this));
   }
 
   render() {
@@ -19,11 +32,10 @@ class NavBar extends React.Component {
     return (
       <div className={this.props.className}>
         <ul className="nav nav-pills nav-stacked">
-         {this.props.items.map((item, i) => {
-           const boundClick = this.handleClick.bind(this, i);
+         {this.props.routes.map((route, i) => {
            return (
-             <li key={i} className={this.state.selected === i ? 'active' : ''}>
-               <a onClick={boundClick} href="#">{item}</a>
+             <li key={i} className={this.state.route.index === i ? 'active' : ''}>
+               <a href={`/#${route.path}`}>{route.name}</a>
              </li>
            );
          }, this)}
@@ -38,7 +50,7 @@ NavBar.propTypes = {
   className: React.PropTypes.string,
   items: React.PropTypes.array.isRequired,
   selected: (props, propName, componentName) => {
-    const max = props.items.length - 1;
+    const max = props.routes.length - 1;
     const prop = props[propName];
     if (typeof prop !== 'number' ||
       prop < 0 ||
@@ -50,7 +62,7 @@ NavBar.propTypes = {
 };
 
 NavBar.defaultProps = {
-  items: [],
+  items   : [],
   selected: 0
 };
 

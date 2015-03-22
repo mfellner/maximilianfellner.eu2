@@ -25,12 +25,12 @@ class Router extends React.Component {
 
 Root.propTypes = {
   className: React.PropTypes.string,
-  navItems : React.PropTypes.array.isRequired
+  navRoutes: React.PropTypes.array.isRequired
 };
 
 Root.defaultProps = {
   className: 'row',
-  navItems : []
+  navRoutes: []
 };
 
 //Root.run = function (props) {

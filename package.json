@@ -18,6 +18,7 @@
   },
   "private": true,
   "dependencies": {
+    "director": "^1.2.8",
     "koa": "^0.18.1",
     "koa-router": "^4.2.0",
     "koa-static": "^1.4.9",

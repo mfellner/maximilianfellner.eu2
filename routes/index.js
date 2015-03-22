@@ -6,10 +6,13 @@ const Body = React.createFactory(require('../static/jsx/body'));
 
 router.get('/', function* (next) {
   const props = {
-    navItems: config.navItems,
-    scripts: config.allScripts(),
-    styles: config.stylesheets
+    navRoutes: config.navRoutes,
+    scripts  : config.allScripts(),
+    styles   : config.stylesheets
   };
+
+  console.log('this.url', this.url);
+  console.log('this.request.url', this.request.url);
 
   this.body = React.renderToStaticMarkup(Body(props));
 
