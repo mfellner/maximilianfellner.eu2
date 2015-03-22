@@ -40,13 +40,14 @@ gulp.task 'webpack', ['clean'], ->
         {test: /\.(ttf|eot|svg|woff2?)$/, loader: 'file'},
         {test: /\.jsx$/, loader: 'jsx-loader?harmony'}
       ]
-    lesscss: [
-      new cleancss
-        advanced           : not argv.production?
-        keepBreaks         : not argv.production?
-        keepSpecialComments: not argv.production?
-      new autoprefix
-    ]
+    lessLoader:
+      lessPlugins: [
+        new cleancss
+          advanced           : not argv.production?
+          keepBreaks         : not argv.production?
+          keepSpecialComments: not argv.production?
+        new autoprefix
+      ]
     plugins: do =>
       plugins = []
       plugins.push new @WebPack.optimize.UglifyJsPlugin() if argv.production?
