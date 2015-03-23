@@ -15,16 +15,22 @@ class NavBar extends React.Component {
   componentDidMount() {
     const currentRoute = new Rx.BehaviorSubject(this.state);
 
-    const router = new director.Router()
-      //.configure({html5history: true})
+    this.props.router
+      .configure({
+        html5history: true
+      })
       .init();
 
     this.props.routes.forEach(route => {
       const newState = {route: route};
-      router.on(route.path, currentRoute.onNext.bind(currentRoute, newState));
+      this.props.router.on(route.path, currentRoute.onNext.bind(currentRoute, newState));
     });
 
     currentRoute.subscribe(this.setState.bind(this));
+  }
+
+  onRouteClicked(route) {
+    this.props.router.setRoute(route.path);
   }
 
   render() {
@@ -33,9 +39,10 @@ class NavBar extends React.Component {
       <div className={this.props.className}>
         <ul className="nav nav-pills nav-stacked">
          {this.props.routes.map((route, i) => {
+           const onClick = this.onRouteClicked.bind(this, route);
            return (
              <li key={i} className={this.state.route.index === i ? 'active' : ''}>
-               <a href={`/#${route.path}`}>{route.name}</a>
+               <a onClick={onClick}>{route.name}</a>
              </li>
            );
          }, this)}
@@ -63,7 +70,8 @@ NavBar.propTypes = {
 
 NavBar.defaultProps = {
   items   : [],
-  selected: 0
+  selected: 0,
+  router  : new director.Router()
 };
 
 module.exports = NavBar;

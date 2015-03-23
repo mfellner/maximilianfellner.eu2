@@ -8,7 +8,8 @@ class Body extends React.Component {
 
   render() {
     const rootProps = {
-      navRoutes: this.props.navRoutes
+      routeIndex: this.props.routeIndex,
+      navRoutes : this.props.navRoutes
     };
     /* jshint ignore:start */
     return (

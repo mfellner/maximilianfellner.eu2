@@ -4,15 +4,20 @@ const config = require('../config/config');
 
 const Body = React.createFactory(require('../static/jsx/body'));
 
-router.get('/', function* (next) {
-  const props = {
-    navRoutes: config.navRoutes,
-    scripts  : config.allScripts(),
-    styles   : config.stylesheets
-  };
+function getRouteIndex(path) {
+  for (var i = 0; i < config.navRoutes.length; i += 1) {
+    if (config.navRoutes[i].path === path)
+      return config.navRoutes[i].index;
+  }
+}
 
-  console.log('this.url', this.url);
-  console.log('this.request.url', this.request.url);
+router.get(/^\/[a-z]*$/i, function* (next) {
+  const props = {
+    routeIndex: getRouteIndex(this.path),
+    navRoutes : config.navRoutes,
+    scripts   : config.allScripts(),
+    styles    : config.stylesheets
+  };
 
   this.body = React.renderToStaticMarkup(Body(props));
 

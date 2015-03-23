@@ -1,5 +1,4 @@
 const React  = require('react');
-//const Router = require('react-router/build/npm');
 
 const NavBar = require('./nav-bar.jsx');
 const Home   = require('./home.jsx');
@@ -13,15 +12,15 @@ class Root extends React.Component {
     /* jshint ignore:start */
     return (
       <div className={this.props.className}>
-        <NavBar className="col-md-2" routes={this.props.navRoutes}/>
+        <NavBar className="col-md-2"
+          routes={this.props.navRoutes}
+          selected={this.props.routeIndex}/>
         <Home/>
       </div>
     );
     /* jshint ignore:end */
   }
 }
-
-//<RouteHandler/>
 
 Root.propTypes = {
   className: React.PropTypes.string,
