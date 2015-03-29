@@ -8,7 +8,7 @@ autoprefix = require 'less-plugin-autoprefix'
 argv       = require('yargs').argv
 
 src =
-  js  : './static/js/main.js'
+  js  : './static/js/main.es6'
   less: './static/less/main.less'
 
 dst =
@@ -39,6 +39,7 @@ gulp.task 'webpack', ['clean'], ->
         },
         {test: /\.(ttf|eot|svg|woff2?)$/, loader: 'file'},
         {test: /\.jsx$/, loader: 'jsx-loader?harmony'}
+        {test: /\.es6$/, exclude: /node_modules/, loader: 'babel-loader?experimental=optional=runtime'}
       ]
     lessLoader:
       lessPlugins: [

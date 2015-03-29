@@ -8,8 +8,12 @@ class Body extends React.Component {
 
   render() {
     const rootProps = {
-      routeIndex: this.props.routeIndex,
-      navRoutes : this.props.navRoutes
+      navStore : this.props.navStore,
+      navRoutes: this.props.navRoutes
+    };
+    const appConfig = {
+      route    : this.props.navStore.get().route,
+      navRoutes: this.props.navRoutes
     };
     /* jshint ignore:start */
     return (
@@ -27,7 +31,7 @@ class Body extends React.Component {
             __html: React.renderToString(Root(rootProps))
           }}/>
           <script dangerouslySetInnerHTML={{
-            __html: `var ROOT_PROPS = ${JSON.stringify(rootProps)};`
+            __html: `function getAppConfig() { return ${JSON.stringify(appConfig)};}`
           }}/>
         {this.props.scripts.map((script, i) => {
           return (
@@ -42,13 +46,15 @@ class Body extends React.Component {
 }
 
 Body.propTypes = {
-  scripts: React.PropTypes.array,
-  styles : React.PropTypes.array
+  styles   : React.PropTypes.array,
+  scripts  : React.PropTypes.array,
+  navStore : React.PropTypes.object.isRequired,
+  navRoutes: React.PropTypes.array.isRequired
 };
 
 Body.defaultProps = {
-  scripts: [],
-  styles : []
+  styles : [],
+  scripts: []
 };
 
 module.exports = Body;

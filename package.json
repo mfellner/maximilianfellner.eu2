@@ -18,6 +18,7 @@
   },
   "private": true,
   "dependencies": {
+    "babel": "^4.7.16",
     "director": "^1.2.8",
     "koa": "^0.18.1",
     "koa-router": "^4.2.0",
@@ -26,6 +27,9 @@
     "react": "^0.13.0"
   },
   "devDependencies": {
+    "babel-core": "^4.7.16",
+    "babel-loader": "^4.2.0",
+    "babel-runtime": "^5.0.0-beta1",
     "bower": "^1.3.12",
     "coffee-script": "^1.9.1",
     "css-loader": "^0.9.1",

@@ -1,6 +1,6 @@
-const app = require('koa')();
+const app    = require('koa')();
 const router = require('koa-router')();
-const serve = require('koa-static');
+const serve  = require('koa-static');
 
 require('node-jsx').install({extension: '.jsx', harmony: true});
 require.extensions['.less'] = function () {};
