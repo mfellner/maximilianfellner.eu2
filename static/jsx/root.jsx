@@ -1,4 +1,4 @@
-const React  = require('react');
+const React = require('react');
 
 const NavBar = require('./nav-bar.jsx');
 const Home   = React.createFactory(require('./home.jsx'));
@@ -9,35 +9,17 @@ const About  = React.createFactory(require('./about.jsx'));
  */
 class Root extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      navState: this.props.navStore.get()
-    };
-  }
-
-  componentDidMount() {
-    this.props.navStore.navState.subscribe(this.setNavState.bind(this));
-  }
-
-  setNavState(navState) {
-    this.setState({
-      content : this.props.content,
-      navState: navState
-    });
-  }
-
   render() {
-    /* jshint ignore:start */
     return (
+      /* jshint ignore:start */
       <div className={this.props.className}>
         <NavBar className="col-md-2"
                 routes={this.props.navRoutes}
-                state={this.state.navState}/>
-        {this.state.content}
+                navStore={this.props.navStore}/>
+        {this.props.content}
       </div>
+      /* jshint ignore:end */
     );
-    /* jshint ignore:end */
   }
 }
 
@@ -48,9 +30,8 @@ Root.propTypes = {
 };
 
 Root.defaultProps = {
-  content  : Home(),
   className: 'row',
-  navRoutes: []
+  content  : Home()
 };
 
 module.exports = Root;

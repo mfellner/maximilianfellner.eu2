@@ -15,8 +15,9 @@ class Body extends React.Component {
       route    : this.props.navStore.get().route,
       navRoutes: this.props.navRoutes
     };
-    /* jshint ignore:start */
+
     return (
+      /* jshint ignore:start */
       <html lang="en">
         <meta charSet="utf-8"/>
         <head>
@@ -40,16 +41,16 @@ class Body extends React.Component {
         })}
         </body>
       </html>
+      /* jshint ignore:end */
     );
-    /* jshint ignore:end */
   }
 }
 
 Body.propTypes = {
   styles   : React.PropTypes.array,
   scripts  : React.PropTypes.array,
-  navStore : React.PropTypes.object.isRequired,
-  navRoutes: React.PropTypes.array.isRequired
+  navRoutes: React.PropTypes.array.isRequired,
+  navStore : React.PropTypes.object.isRequired
 };
 
 Body.defaultProps = {

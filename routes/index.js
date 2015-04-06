@@ -8,31 +8,35 @@ const NavActions = require('../static/js/nav-actions.es6');
 
 const Body = React.createFactory(require('../static/jsx/body'));
 
-function getRouteIndex(path) {
+function getCurrentRoute(path) {
   for (var i = 0; i < config.navRoutes.length; i += 1) {
     if (config.navRoutes[i].path === path)
-      return config.navRoutes[i].index;
+      return config.navRoutes[i];
   }
 }
 
 router.get(/^\/[a-z]*$/i, function* (next) {
 
-  const navStore = new NavStore({
-    route: config.navRoutes[getRouteIndex(this.path)]
-  });
-
   const props = {
-    routeIndex: getRouteIndex(this.path),
+    navStore  : new NavStore(),
     navRoutes : config.navRoutes,
     scripts   : config.allScripts(),
-    styles    : config.stylesheets,
-    navStore  : navStore
+    styles    : config.stylesheets
   };
 
   // Wire up the store with the actions.
-  new NavActions().register(props.navStore.updates);
+  NavActions.register(props.navStore.updates);
 
-  this.body = React.renderToStaticMarkup(Body(props));
+  const promise = new Promise(function (resolve) {
+    props.navStore.navState.first().subscribe(function () {
+      resolve(React.renderToStaticMarkup(Body(props)));
+    });
+  });
+
+  // Send current route to store.
+  NavActions.navigateTo.onNext(getCurrentRoute(this.path));
+
+  this.body = yield promise;
 
   yield next;
 });

@@ -1,4 +1,3 @@
 {
-  "esnext": true,
-  "noyield": true
+  "esnext": true
 }
