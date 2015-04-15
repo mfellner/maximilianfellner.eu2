@@ -1,10 +1,14 @@
 const router = require('koa-router')();
 const React  = require('react');
+const Rx     = require('Rx');
+const moment = require('moment');
+const uuid   = require('node-uuid');
+
 const config = require('../config/config');
 
 require('babel/register');
-const NavStore   = require('../static/js/nav-store.es6');
-const NavActions = require('../static/js/nav-actions.es6');
+const NavStore     = require('../static/js/nav-store.es6');
+const ContentStore = require('../static/js/content-store.es6');
 
 const Body = React.createFactory(require('../static/jsx/body'));
 
@@ -15,28 +19,36 @@ function getCurrentRoute(path) {
   }
 }
 
+function getCurrentContent(path) {
+  return {
+      '/': '<h3>Home</h3>',
+      '/about': '<h3>About</h3>'
+    }[path] || '<h3>Not Found</h3>';
+}
+
 router.get(/^\/[a-z]*$/i, function* (next) {
 
-  const props = {
-    navStore  : new NavStore(),
-    navRoutes : config.navRoutes,
-    scripts   : config.allScripts(),
-    styles    : config.stylesheets
+  const state = {
+    nav    : {route  : getCurrentRoute(this.path)},
+    content: {content: getCurrentContent(this.path)}
   };
 
-  // Wire up the store with the actions.
-  NavActions.register(props.navStore.updates);
+  const props = {
+    scripts        : config.allScripts(),
+    styles         : config.stylesheets,
+    navRoutes      : config.navRoutes,
+    navStore       : new NavStore(state.nav),
+    contentStore   : new ContentStore(state.content),
+    stateCookieName: uuid.v4()
+  };
 
-  const promise = new Promise(function (resolve) {
-    props.navStore.navState.first().subscribe(function () {
-      resolve(React.renderToStaticMarkup(Body(props)));
-    });
+  // Set a temporary cookie that contains the initial application state.
+  this.cookies.set(props.stateCookieName, JSON.stringify(state), {
+    httpOnly: false,
+    expires : moment().add(5, 'second').toDate()
   });
 
-  // Send current route to store.
-  NavActions.navigateTo.onNext(getCurrentRoute(this.path));
-
-  this.body = yield promise;
+  this.body = React.renderToStaticMarkup(Body(props));
 
   yield next;
 });

@@ -1,9 +1,9 @@
-const Rx       = require('rx');
 const React    = require('react');
 const director = require('director');
 
-const Observables = require('../../util/observables.es6');
-const NavActions  = require('../js/nav-actions.es6');
+const Observables     = require('../../util/observables.es6');
+const NavActions      = require('../js/nav-actions.es6');
+const ContentActions  = require('../js/content-actions.es6');
 
 /**
  * Component: NavBar
@@ -25,14 +25,13 @@ class NavBar extends React.Component {
       .init();
 
     this.props.routes.forEach(route => {
-      routerOn(route.path)
-        .map(() => {
-          return route;
-        })
-        .subscribe(NavActions.navigateTo);
+      const onRoute = routerOn(route.path).map(() => route);
+
+      onRoute.subscribe(NavActions.navigateTo);
+      onRoute.map((route) => route.path).subscribe(ContentActions.get);
     });
 
-    this.props.navStore.navState.subscribe(this.setState.bind(this));
+    this.props.navStore.subscribe(this.setState.bind(this));
   }
 
   onRouteClicked(route) {

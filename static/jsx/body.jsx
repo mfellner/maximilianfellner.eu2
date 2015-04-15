@@ -8,12 +8,14 @@ class Body extends React.Component {
 
   render() {
     const rootProps = {
-      navStore : this.props.navStore,
-      navRoutes: this.props.navRoutes
+      navRoutes   : this.props.navRoutes,
+      navStore    : this.props.navStore,
+      contentStore: this.props.contentStore
     };
     const appConfig = {
-      route    : this.props.navStore.get().route,
-      navRoutes: this.props.navRoutes
+      route          : this.props.navStore.get().route,
+      navRoutes      : this.props.navRoutes,
+      stateCookieName: this.props.stateCookieName
     };
 
     return (

@@ -2,24 +2,27 @@
 
 require('bootstrap/less/bootstrap.less');
 
-require(['react', './nav-actions.es6', './nav-store.es6'], (React, NavActions, NavStore) => {
+require(['react', 'cookies-js',
+  './nav-actions.es6', './nav-store.es6', './content-actions.es6', './content-store.es6'
+], (React, Cookies, NavActions, NavStore, ContentActions, ContentStore) => {
 
-  const Root     = React.createFactory(require('../jsx/root.jsx'));
-  const navStore = new NavStore();
+  const Root = React.createFactory(require('../jsx/root.jsx'));
+
+  const config = getAppConfig();
+
+  // Read and expire the temporary cookie with the initial application state.
+  const state = JSON.parse(Cookies.get(config.stateCookieName));
+  Cookies.expire(config.stateCookieName);
 
   const rootProps = {
-    navStore : navStore,
-    navRoutes: getAppConfig().navRoutes
+    navRoutes   : config.navRoutes,
+    navStore    : new NavStore(state.nav),
+    contentStore: new ContentStore(state.content)
   };
 
-  // Wire up the store with the actions.
-  NavActions.register(navStore.updates);
+  // Wire up the stores with the actions.
+  NavActions.register(rootProps.navStore.updates);
+  ContentActions.register(rootProps.contentStore.updates);
 
-  // Register callback for the first route-update to be put into the store.
-  navStore.navState.first().subscribe(function (x) {
-    React.render(Root(rootProps), document.getElementById('main'));
-  });
-
-  // Send the current route to the store.
-  NavActions.navigateTo.onNext(getAppConfig().route);
+  React.render(Root(rootProps), document.getElementById('main'));
 });

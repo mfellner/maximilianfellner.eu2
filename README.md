@@ -19,7 +19,7 @@ gulp build
 Start with live reloading:
 
 ```
-nodemon --harmony server.js
+nodemon --harmony
 ```
 
 The web service should now be running on [http://localhost:3000]().

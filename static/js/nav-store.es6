@@ -1,18 +1,25 @@
-const Rx = require('rx');
+const Rx       = require('rx');
+const deepcopy = require('deepcopy');
 
 class NavStore {
 
-  constructor() {
+  constructor(store = {}) {
 
-    const NAV_STATE = {
-      route: null
-    };
+    const NAV_STATE = deepcopy(store);
 
     this.get = () => NAV_STATE;
 
     this.updates = new Rx.BehaviorSubject(NAV_STATE);
 
-    this.navState = new Rx.Subject();
+    const navState = new Rx.Subject();
+
+    this.subscribe = function () {
+      navState.subscribe.apply(navState, arguments);
+    };
+
+    this.firstUpdate = function () {
+      return navState.first();
+    };
 
     this.updates
       .scan((navState, operation) => {
@@ -21,7 +28,7 @@ class NavStore {
       .filter(navState => {
         return !!navState.route;
       })
-      .subscribe(this.navState);
+      .subscribe(navState);
   }
 }
 
