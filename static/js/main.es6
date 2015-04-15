@@ -1,4 +1,4 @@
-/* global getAppConfig: false */
+/* global STATE_COOKIE_NAME: false */
 
 require('bootstrap/less/bootstrap.less');
 
@@ -8,14 +8,12 @@ require(['react', 'cookies-js',
 
   const Root = React.createFactory(require('../jsx/root.jsx'));
 
-  const config = getAppConfig();
-
   // Read and expire the temporary cookie with the initial application state.
-  const state = JSON.parse(Cookies.get(config.stateCookieName));
-  Cookies.expire(config.stateCookieName);
+  const state = JSON.parse(Cookies.get(STATE_COOKIE_NAME));
+  Cookies.expire(STATE_COOKIE_NAME);
 
   const rootProps = {
-    navRoutes   : config.navRoutes,
+    navRoutes   : state.navRoutes,
     navStore    : new NavStore(state.nav),
     contentStore: new ContentStore(state.content)
   };

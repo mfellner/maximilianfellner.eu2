@@ -29,14 +29,15 @@ function getCurrentContent(path) {
 router.get(/^\/[a-z]*$/i, function* (next) {
 
   const state = {
-    nav    : {route  : getCurrentRoute(this.path)},
-    content: {content: getCurrentContent(this.path)}
+    nav      : {route  : getCurrentRoute(this.path)},
+    content  : {content: getCurrentContent(this.path)},
+    navRoutes: config.navRoutes
   };
 
   const props = {
     scripts        : config.allScripts(),
     styles         : config.stylesheets,
-    navRoutes      : config.navRoutes,
+    navRoutes      : state.navRoutes,
     navStore       : new NavStore(state.nav),
     contentStore   : new ContentStore(state.content),
     stateCookieName: uuid.v4()

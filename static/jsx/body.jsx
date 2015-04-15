@@ -12,11 +12,6 @@ class Body extends React.Component {
       navStore    : this.props.navStore,
       contentStore: this.props.contentStore
     };
-    const appConfig = {
-      route          : this.props.navStore.get().route,
-      navRoutes      : this.props.navRoutes,
-      stateCookieName: this.props.stateCookieName
-    };
 
     return (
       /* jshint ignore:start */
@@ -34,7 +29,7 @@ class Body extends React.Component {
             __html: React.renderToString(Root(rootProps))
           }}/>
           <script dangerouslySetInnerHTML={{
-            __html: `function getAppConfig() { return ${JSON.stringify(appConfig)};}`
+            __html: `var STATE_COOKIE_NAME = '${this.props.stateCookieName}'; `
           }}/>
         {this.props.scripts.map((script, i) => {
           return (
