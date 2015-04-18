@@ -18,6 +18,7 @@ app
     console.log('%s %s - %s ms', this.method, this.url, ms);
   })
   .use(require('./routes/index'))
+  .use(require('./routes/api'))
   .use(router.allowedMethods())
   .use(serve(__dirname + '/pack', {
     defer: true

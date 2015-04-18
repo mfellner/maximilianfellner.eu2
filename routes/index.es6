@@ -3,33 +3,41 @@ const React  = require('react');
 const Rx     = require('Rx');
 const moment = require('moment');
 const uuid   = require('node-uuid');
+const changeCase = require('change-case');
 
-const config = require('../config/config');
+const config      = require('../config/config');
+const contentCtrl = require('../controllers/content-controller.es6');
 
 const NavStore     = require('../static/js/nav-store');
 const ContentStore = require('../static/js/content-store');
 
 const Body = React.createFactory(require('../static/jsx/body'));
 
-function getCurrentRoute(path) {
-  for (var i = 0; i < config.navRoutes.length; i += 1) {
-    if (config.navRoutes[i].path === path)
-      return config.navRoutes[i];
-  }
+// Set content response for all navigable route paths.
+for (let route of config.navRoutes) {
+  router.get(route.path, contentResponse);
 }
 
-function getCurrentContent(path) {
-  return {
-      '/': '<h3>Home</h3>',
-      '/about': '<h3>About</h3>'
-    }[path] || '<h3>Not Found</h3>';
-}
+function*contentResponse() {
 
-router.get(/^\/[a-z]*$/i, function* () {
+  const currentRoute = Rx.Observable
+    .fromArray(config.navRoutes)
+    .filter(route => route.path === this.path)
+    .first();
 
+  const content = yield contentCtrl.pageContent.apply({
+    method: 'GET',
+    params: {
+      key: yield currentRoute
+        .map(route => changeCase.param(route.name))
+        .toPromise()
+    }
+  });
+
+  // Create the initial application state.
   const state = {
-    nav      : {route  : getCurrentRoute(this.path)},
-    content  : {content: getCurrentContent(this.path)},
+    nav      : {route  : yield currentRoute.toPromise()},
+    content  : {content: content},
     navRoutes: config.navRoutes
   };
 
@@ -49,6 +57,6 @@ router.get(/^\/[a-z]*$/i, function* () {
   });
 
   this.body = yield new Promise(resolve => resolve(React.renderToStaticMarkup(Body(props))));
-});
+}
 
 module.exports = router.routes();
