@@ -29,7 +29,7 @@ class Body extends React.Component {
             __html: React.renderToString(Root(rootProps))
           }}/>
           <script dangerouslySetInnerHTML={{
-            __html: `var STATE_COOKIE_NAME = '${this.props.stateCookieName}'; `
+            __html: `var STATE_COOKIE_NAME = '${this.props.stateCookieName}';`
           }}/>
         {this.props.scripts.map((script, i) => {
           return (

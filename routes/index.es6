@@ -6,9 +6,8 @@ const uuid   = require('node-uuid');
 
 const config = require('../config/config');
 
-require('babel/register');
-const NavStore     = require('../static/js/nav-store.es6');
-const ContentStore = require('../static/js/content-store.es6');
+const NavStore     = require('../static/js/nav-store');
+const ContentStore = require('../static/js/content-store');
 
 const Body = React.createFactory(require('../static/jsx/body'));
 
@@ -26,7 +25,7 @@ function getCurrentContent(path) {
     }[path] || '<h3>Not Found</h3>';
 }
 
-router.get(/^\/[a-z]*$/i, function* (next) {
+router.get(/^\/[a-z]*$/i, function* () {
 
   const state = {
     nav      : {route  : getCurrentRoute(this.path)},
@@ -49,9 +48,7 @@ router.get(/^\/[a-z]*$/i, function* (next) {
     expires : moment().add(5, 'second').toDate()
   });
 
-  this.body = React.renderToStaticMarkup(Body(props));
-
-  yield next;
+  this.body = yield new Promise(resolve => resolve(React.renderToStaticMarkup(Body(props))));
 });
 
 module.exports = router.routes();

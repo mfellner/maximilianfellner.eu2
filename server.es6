@@ -1,16 +1,21 @@
 const app    = require('koa')();
 const router = require('koa-router')();
 const serve  = require('koa-static');
+const nconf  = require('nconf');
 
 require('node-jsx').install({extension: '.jsx', harmony: true});
-require.extensions['.less'] = function () {};
+
+nconf
+  .argv()
+  .env()
+  .file({file: 'config.json'});
 
 app
   .use(function* logger(next) {
-    var start = new Date();
+    const start = new Date();
     yield next;
-    var ms = new Date() - start;
-    console.log('%s %s - %s', this.method, this.url, ms);
+    const ms = new Date() - start;
+    console.log('%s %s - %s ms', this.method, this.url, ms);
   })
   .use(require('./routes/index'))
   .use(router.allowedMethods())
@@ -18,6 +23,6 @@ app
     defer: true
   }));
 
-app.listen(3000);
-console.log('running app in ' + app.env + ' mode');
-console.log('listening on port 3000');
+app.listen(nconf.get('APP_PORT'));
+console.log(`running app in ${app.env} mode`);
+console.log(`listening on port ${nconf.get('APP_PORT')}`);

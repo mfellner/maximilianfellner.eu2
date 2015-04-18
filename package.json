@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "author": "Maximilian Fellner",
   "description": "Personal website of Maximilian Fellner",
-  "main": "server.js",
+  "main": "server.es6",
   "scripts": {
-    "start": "node --harmony server.js",
+    "start": "babel-node --extensions \".es6\" --harmony server.es6",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "node node_modules/.bin/bower -q install"
   },
@@ -19,12 +19,14 @@
   "private": true,
   "dependencies": {
     "babel": "^4.7.16",
+    "co": "^4.5.2",
     "deepcopy": "^0.5.0",
     "director": "^1.2.8",
     "koa": "^0.18.1",
     "koa-router": "^4.2.0",
     "koa-static": "^1.4.9",
     "moment": "^2.10.2",
+    "nconf": "^0.7.1",
     "node-jsx": "^0.12.4",
     "node-uuid": "^1.4.3",
     "react": "^0.13.0"
@@ -41,6 +43,7 @@
     "extract-text-webpack-plugin": "^0.4.0",
     "file-loader": "^0.8.1",
     "gulp": "^3.8.11",
+    "gulp-nodemon": "^2.0.2",
     "gulp-rename": "^1.2.0",
     "gulp-webpack": "^1.3.0",
     "jsx-loader": "^0.12.2",

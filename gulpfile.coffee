@@ -3,6 +3,7 @@ path       = require 'path'
 gulp       = require 'gulp'
 rename     = require 'gulp-rename'
 webpack    = require 'gulp-webpack'
+nodemon    = require 'gulp-nodemon'
 cleancss   = require 'less-plugin-clean-css'
 autoprefix = require 'less-plugin-autoprefix'
 argv       = require('yargs').argv
@@ -55,6 +56,13 @@ gulp.task 'webpack', ['clean'], ->
       plugins.push new @ExtractText('[name].min.css')
       plugins
   .pipe gulp.dest(path.dirname dst.pack)
+
+
+gulp.task 'run', ['build'], ->
+  nodemon
+    execMap:
+      'es6': 'babel-node --extensions ".es6" --harmony'
+    ext: 'es6 jsx'
 
 
 gulp.task 'clean', ->
