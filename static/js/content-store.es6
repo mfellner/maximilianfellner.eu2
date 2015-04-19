@@ -1,34 +1,50 @@
 const Rx       = require('rx');
-const deepcopy = require('deepcopy');
+const Backbone = require('backbone');
+
+const Content = require('./content.es6');
 
 class NavStore {
 
-  constructor(store = {}) {
+  constructor(model = {}) {
 
-    const CONTENT_STORE = deepcopy(store);
+    const CONTENT_MODEL = new Content(model);
 
-    this.get = () => CONTENT_STORE;
+    //if (Backbone.ajax && Backbone.$ && !CONTENT_MODEL.isValid()) {
+    //  console.log('CONTENT_MODEL.fetch');
+    //  CONTENT_MODEL.fetch();
+    //}
 
-    this.updates = new Rx.BehaviorSubject(CONTENT_STORE);
+    this.get = function () {
+      return CONTENT_MODEL.get.apply(CONTENT_MODEL, arguments);
+    };
 
-    const contentState = new Rx.Subject();
+    this.actionReceiver = new Rx.Subject();
 
+    const contentModelState = new Rx.Subject();
+
+    /**
+     * Subscribe to the current state of the content model.
+     *
+     * @param arguments (Arguments | Array) onNext, onError, onCompleted
+     */
     this.subscribe = function () {
-      contentState.subscribe.apply(contentState, arguments);
+      contentModelState.subscribe.apply(contentModelState, arguments);
     };
 
-    this.firstUpdate = function () {
-      return contentState.first();
-    };
-
-    this.updates
-      .scan((contentStore, operation) => {
-        return operation(contentStore);
+    new Rx.BehaviorSubject(CONTENT_MODEL)
+      .combineLatest(this.actionReceiver,
+      (contentModel, action)=> {
+        console.log('store.combineLatest:contentModel', contentModel);
+        console.log('store.combineLatest:action', action);
+        return action(contentModel);
       })
-      .filter(contentStore => {
-        return !!contentStore.content;
+      .concatAll()
+      .filter(contentModel => {
+        console.log('store.filter:contentModel', contentModel);
+        console.log('store.filter:contentModel.isValid', contentModel.isValid());
+        return contentModel.isValid();
       })
-      .subscribe(contentState);
+      .subscribe(contentModelState);
   }
 }
 

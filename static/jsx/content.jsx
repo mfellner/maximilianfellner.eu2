@@ -7,11 +7,13 @@ class Content extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = this.props.contentStore.get();
+    this.state = {content: this.props.contentStore.get('content')};
   }
 
   componentWillMount() {
-    this.props.contentStore.subscribe(this.setState.bind(this));
+    this.props.contentStore.subscribe((model) => {
+      this.setState({content: model.get('content')});
+    });
   }
 
   createMarkup() {
@@ -30,7 +32,7 @@ class Content extends React.Component {
 }
 
 Content.propTypes = {
-  className   : React.PropTypes.string,
+  className: React.PropTypes.string,
   contentStore: React.PropTypes.object.isRequired
 };
 

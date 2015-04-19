@@ -20,7 +20,7 @@ require(['react', 'cookies-js',
 
   // Wire up the stores with the actions.
   NavActions.register(rootProps.navStore.updates);
-  ContentActions.register(rootProps.contentStore.updates);
+  ContentActions.register(rootProps.contentStore.actionReceiver);
 
   React.render(Root(rootProps), document.getElementById('main'));
 });

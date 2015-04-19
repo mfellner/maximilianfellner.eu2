@@ -1,5 +1,14 @@
 const production = process.env.NODE_ENV === 'production';
 
+const cdnURL = '//cdnjs.cloudflare.com';
+
+const versions = {
+  jquery    : '2.1.3',
+  underscore: '1.8.3',
+  react     : '0.13.1',
+  backbone  : '1.1.2'
+};
+
 const config = {
   navRoutes: [
     {index: 0, name: 'Home', path: '/'},
@@ -12,7 +21,10 @@ const config = {
     '/main.min.js'
   ],
   externalScripts: [
-    `//cdnjs.cloudflare.com/ajax/libs/react/0.13.0/react${(production ? '.min' : '')}.js`
+    `${cdnURL}/ajax/libs/underscore.js/${versions.underscore}/underscore${production ? '-min' : ''}.js`,
+    `${cdnURL}/ajax/libs/jquery/${versions.jquery}/jquery${production ? '.min' : ''}.js`,
+    `${cdnURL}/ajax/libs/react/${versions.react}/react${production ? '.min' : ''}.js`,
+    `${cdnURL}/ajax/libs/backbone.js/${versions.backbone}/backbone${production ? '-min' : ''}.js`
   ],
   allScripts: function () {
     return this.externalScripts.concat(this.scripts);

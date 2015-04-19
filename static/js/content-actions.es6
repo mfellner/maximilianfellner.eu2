@@ -1,17 +1,22 @@
-const Rx = require('rx');
+const Rx         = require('rx');
+const Backbone   = require('backbone');
+const changeCase = require('change-case');
 
-const dummyContent = {
-  '/'     : '<h3>Home</h3>',
-  '/about': '<h3>About</h3>'
-};
+const Content = require('./content.es6');
 
 class ContentActions {
   static register(updates) {
     this.get
-      .map(path => {
-        return contentStore => {
-          contentStore.content = dummyContent[path] || '<h3>Not Found</h3>';
-          return contentStore;
+      .map(route => {
+        console.log('actions.map:route', route);
+        return contentModel => {
+          console.log('actions.fn:contentModel', contentModel);
+          if (!Backbone.ajax || !Backbone.$) return Rx.Observable.just(contentModel);
+
+          return Rx.Observable.fromPromise(
+            new Content({key: changeCase.param(route.name)})
+              .fetch()
+              .then(attrs => contentModel.set(attrs)));
         };
       })
       .subscribe(updates);

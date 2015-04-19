@@ -28,7 +28,7 @@ class NavBar extends React.Component {
       const onRoute = routerOn(route.path).map(() => route);
 
       onRoute.subscribe(NavActions.navigateTo);
-      onRoute.map((route) => route.path).subscribe(ContentActions.get);
+      onRoute.subscribe(ContentActions.get);
     });
 
     this.props.navStore.subscribe(this.setState.bind(this));

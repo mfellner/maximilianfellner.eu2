@@ -25,6 +25,7 @@ function*contentResponse() {
     .filter(route => route.path === this.path)
     .first();
 
+  // Request the content for the current route.
   const content = yield contentCtrl.pageContent.apply({
     method: 'GET',
     params: {
@@ -37,7 +38,7 @@ function*contentResponse() {
   // Create the initial application state.
   const state = {
     nav      : {route  : yield currentRoute.toPromise()},
-    content  : {content: content},
+    content  : content,
     navRoutes: config.navRoutes
   };
 
@@ -46,7 +47,7 @@ function*contentResponse() {
     styles         : config.stylesheets,
     navRoutes      : state.navRoutes,
     navStore       : new NavStore(state.nav),
-    contentStore   : new ContentStore(state.content),
+    contentStore   : new ContentStore(content),
     stateCookieName: uuid.v4()
   };
 

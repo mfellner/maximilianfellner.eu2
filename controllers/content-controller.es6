@@ -1,9 +1,9 @@
 function getContent(key) {
-  return new Promise(function (resolve) {
+  return new Promise(resolve => {
     resolve({
-      'home': '<h3>Home</h3>',
-      'about': '<h3>About</h3>'
-    }[key] || {error: 'Not Found'});
+      'home' : {key: 'home', content: '<h3>Home</h3><p>Hello, home.</p>'},
+      'about': {key: 'about', content: '<h3>About</h3><p>Hello, about.</p>'}
+    }[key]  || {error: 'Not Found'});
   });
 }
 

@@ -31,7 +31,10 @@ gulp.task 'webpack', ['clean'], ->
         'node_modules'
       ]
     externals:
-      'react': 'React'
+      'jquery'    : 'jQuery'
+      'underscore': '_'
+      'Backbone'  : 'Backbone'
+      'react'     : 'React'
     module:
       loaders: [
         {
