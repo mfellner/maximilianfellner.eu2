@@ -10,11 +10,6 @@ const ContentActions  = require('../js/content-actions.es6');
  */
 class NavBar extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = this.props.navStore.get();
-  }
-
   componentDidMount() {
     const routerOn = Observables.fromCallback(this.props.router.on, this.props.router);
 
@@ -30,8 +25,6 @@ class NavBar extends React.Component {
       onRoute.subscribe(NavActions.navigateTo);
       onRoute.subscribe(ContentActions.get);
     });
-
-    this.props.navStore.subscribe(this.setState.bind(this));
   }
 
   onRouteClicked(route) {
@@ -46,7 +39,7 @@ class NavBar extends React.Component {
           {this.props.routes.map((route, i) => {
             const onClick = this.onRouteClicked.bind(this, route);
             return (
-              <li key={i} className={this.state.route.index === i ? 'active' : ''}>
+              <li key={i} className={this.props.index === i ? 'active' : ''}>
                 <a onClick={onClick}>{route.name}</a>
               </li>
             );
@@ -61,7 +54,7 @@ class NavBar extends React.Component {
 NavBar.propTypes = {
   className: React.PropTypes.string,
   routes   : React.PropTypes.array.isRequired,
-  navStore : React.PropTypes.object.isRequired
+  index    : React.PropTypes.number.isRequired
 };
 
 NavBar.defaultProps = {

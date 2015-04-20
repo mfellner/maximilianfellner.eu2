@@ -1,10 +1,11 @@
 /* global STATE_COOKIE_NAME: false */
 
 require('bootstrap/less/bootstrap.less');
+require('babel/polyfill');
 
-require(['react', 'cookies-js',
+require(['react', 'cookies-js', 'co',
   './nav-actions.es6', './nav-store.es6', './content-actions.es6', './content-store.es6'
-], (React, Cookies, NavActions, NavStore, ContentActions, ContentStore) => {
+], (React, Cookies, co, NavActions, NavStore, ContentActions, ContentStore) => {
 
   const Root = React.createFactory(require('../jsx/root.jsx'));
 
@@ -12,15 +13,26 @@ require(['react', 'cookies-js',
   const state = JSON.parse(Cookies.get(STATE_COOKIE_NAME));
   Cookies.expire(STATE_COOKIE_NAME);
 
-  const rootProps = {
-    navRoutes   : state.navRoutes,
-    navStore    : new NavStore(state.nav),
-    contentStore: new ContentStore(state.content)
-  };
+  const navStore     = new NavStore(state.route);
+  const contentStore = new ContentStore(state.content);
 
   // Wire up the stores with the actions.
-  NavActions.register(rootProps.navStore.updates);
-  ContentActions.register(rootProps.contentStore.actionReceiver);
+  navStore.registerActions(NavActions);
+  contentStore.registerActions(ContentActions);
 
-  React.render(Root(rootProps), document.getElementById('main'));
+  co(function*() {
+    const routeModel   = yield navStore.getModel();
+    const initialIndex = routeModel.get('index');
+
+    const contentModel   = yield contentStore.getModel();
+    const initialContent = contentModel.get('content');
+
+    return {
+      navRoutes     : state.navRoutes,
+      navStore      : navStore,
+      contentStore  : contentStore,
+      initialIndex  : initialIndex,
+      initialContent: initialContent
+    };
+  }).then(props => React.render(Root(props), document.getElementById('main')));
 });

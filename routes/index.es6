@@ -20,34 +20,33 @@ for (let route of config.navRoutes) {
 
 function*contentResponse() {
 
-  const currentRoute = Rx.Observable
+  const currentRoute = yield Rx.Observable
     .fromArray(config.navRoutes)
     .filter(route => route.path === this.path)
-    .first();
+    .first()
+    .toPromise();
 
   // Request the content for the current route.
-  const content = yield contentCtrl.pageContent.apply({
+  const contentModel = yield contentCtrl.pageContent.apply({
     method: 'GET',
     params: {
-      key: yield currentRoute
-        .map(route => changeCase.param(route.name))
-        .toPromise()
+      key: changeCase.param(currentRoute.name)
     }
   });
 
   // Create the initial application state.
   const state = {
-    nav      : {route  : yield currentRoute.toPromise()},
-    content  : content,
+    route    : currentRoute,
+    content  : contentModel,
     navRoutes: config.navRoutes
   };
 
   const props = {
     scripts        : config.allScripts(),
     styles         : config.stylesheets,
-    navRoutes      : state.navRoutes,
-    navStore       : new NavStore(state.nav),
-    contentStore   : new ContentStore(content),
+    navRoutes      : config.navRoutes,
+    initialIndex   : currentRoute.index,
+    initialContent : contentModel.content,
     stateCookieName: uuid.v4()
   };
 

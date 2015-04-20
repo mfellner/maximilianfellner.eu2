@@ -8,9 +8,7 @@ class ContentActions {
   static register(updates) {
     this.get
       .map(route => {
-        console.log('actions.map:route', route);
         return contentModel => {
-          console.log('actions.fn:contentModel', contentModel);
           if (!Backbone.ajax || !Backbone.$) return Rx.Observable.just(contentModel);
 
           return Rx.Observable.fromPromise(

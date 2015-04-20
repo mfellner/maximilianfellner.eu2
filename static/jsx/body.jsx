@@ -8,9 +8,9 @@ class Body extends React.Component {
 
   render() {
     const rootProps = {
-      navRoutes   : this.props.navRoutes,
-      navStore    : this.props.navStore,
-      contentStore: this.props.contentStore
+      navRoutes     : this.props.navRoutes,
+      initialIndex  : this.props.initialIndex,
+      initialContent: this.props.initialContent
     };
 
     return (

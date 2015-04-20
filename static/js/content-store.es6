@@ -1,47 +1,60 @@
-const Rx       = require('rx');
-const Backbone = require('backbone');
+const Rx = require('rx');
 
 const Content = require('./content.es6');
 
 class NavStore {
 
   constructor(model = {}) {
+    /**
+     * Subject to receive actions.
+     * @type {Rx.Subject}
+     */
+    const actionReceiver = new Rx.Subject();
 
-    const CONTENT_MODEL = new Content(model);
-
-    //if (Backbone.ajax && Backbone.$ && !CONTENT_MODEL.isValid()) {
-    //  console.log('CONTENT_MODEL.fetch');
-    //  CONTENT_MODEL.fetch();
-    //}
-
-    this.get = function () {
-      return CONTENT_MODEL.get.apply(CONTENT_MODEL, arguments);
-    };
-
-    this.actionReceiver = new Rx.Subject();
-
+    /**
+     * Subject for the current model state.
+     * @type {Rx.Subject}
+     */
     const contentModelState = new Rx.Subject();
 
     /**
+     * Source subject of the content model.
+     * @type {Rx.BehaviorSubject}
+     */
+    const contentModelSource = new Rx.BehaviorSubject(new Content(model));
+
+    /**
+     * @returns {Promise} Promise that resolves to the content model.
+     */
+    this.getModel = function () {
+      return contentModelSource.first().toPromise();
+    };
+
+    /**
+     * Register a dispatcher of actions.
+     * @param actions {Object} Actions to subscribe to the action receiver.
+     */
+    this.registerActions = function (actions) {
+      actions.register(actionReceiver);
+    };
+
+    /**
      * Subscribe to the current state of the content model.
-     *
-     * @param arguments (Arguments | Array) onNext, onError, onCompleted
+     * @param arguments {Arguments|Array} onNext, onError, onCompleted
      */
     this.subscribe = function () {
       contentModelState.subscribe.apply(contentModelState, arguments);
     };
 
-    new Rx.BehaviorSubject(CONTENT_MODEL)
-      .combineLatest(this.actionReceiver,
+    // The contentModelState subject is subscribed to updates
+    // on the content model (actions applied to the model).
+    contentModelSource
+      .combineLatest(actionReceiver,
       (contentModel, action)=> {
-        console.log('store.combineLatest:contentModel', contentModel);
-        console.log('store.combineLatest:action', action);
         return action(contentModel);
       })
       .concatAll()
       .filter(contentModel => {
-        console.log('store.filter:contentModel', contentModel);
-        console.log('store.filter:contentModel.isValid', contentModel.isValid());
         return contentModel.isValid();
       })
       .subscribe(contentModelState);

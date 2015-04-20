@@ -1,34 +1,62 @@
-const Rx       = require('rx');
-const deepcopy = require('deepcopy');
+const Rx = require('rx');
+
+const Route = require('./route.es6');
 
 class NavStore {
 
-  constructor(store = {}) {
+  constructor(model = {}) {
+    /**
+     * Subject to receive actions.
+     * @type {Rx.Subject}
+     */
+    const actionReceiver = new Rx.Subject();
 
-    const NAV_STATE = deepcopy(store);
+    /**
+     * Subject for the current model state.
+     * @type {Rx.Subject}
+     */
+    const contentModelState = new Rx.Subject();
 
-    this.get = () => NAV_STATE;
+    /**
+     * Source subject of the content model.
+     * @type {Rx.BehaviorSubject}
+     */
+    const contentModelSource = new Rx.BehaviorSubject(new Route(model));
 
-    this.updates = new Rx.BehaviorSubject(NAV_STATE);
+    /**
+     * @returns {Promise} Promise that resolves to the content model.
+     */
+    this.getModel = function () {
+      return contentModelSource.first().toPromise();
+    };
 
-    const navState = new Rx.Subject();
+    /**
+     * Register a dispatcher of actions.
+     * @param actions {Object} Actions to subscribe to the action receiver.
+     */
+    this.registerActions = function (actions) {
+      actions.register(actionReceiver);
+    };
 
+    /**
+     * Subscribe to the current state of the content model.
+     * @param arguments {Arguments|Array} onNext, onError, onCompleted
+     */
     this.subscribe = function () {
-      navState.subscribe.apply(navState, arguments);
+      contentModelState.subscribe.apply(contentModelState, arguments);
     };
 
-    this.firstUpdate = function () {
-      return navState.first();
-    };
-
-    this.updates
-      .scan((navState, operation) => {
-        return operation(navState);
+    // The contentModelState subject is subscribed to updates
+    // on the content model (actions applied to the model).
+    contentModelSource
+      .combineLatest(actionReceiver,
+      (contentModel, action)=> {
+        return action(contentModel);
       })
-      .filter(navState => {
-        return !!navState.route;
+      .filter(contentModel => {
+        return contentModel.isValid();
       })
-      .subscribe(navState);
+      .subscribe(contentModelState);
   }
 }
 
