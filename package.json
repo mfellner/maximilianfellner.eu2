@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "author": "Maximilian Fellner",
   "description": "Personal website of Maximilian Fellner",
-  "main": "server.es6",
+  "main": "./src/server.es6",
   "scripts": {
-    "start": "babel-node --extensions \".es6\" --harmony server.es6",
+    "start": "babel-node --extensions \".es6\" --harmony ./src/server.es6",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "node node_modules/.bin/bower -q install"
   },

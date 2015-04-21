@@ -1,7 +1,7 @@
 const nconf = require('nconf');
 
 const production = nconf.get('NODE_ENV') === 'production';
-const cdnURL = '//cdnjs.cloudflare.com';
+const cdnURL = 'https://cdnjs.cloudflare.com';
 
 const versions = {
   jquery    : '2.1.3',
