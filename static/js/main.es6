@@ -9,7 +9,7 @@ const co      = require('co');
 
 const NavActions     = require('./actions/nav-actions.es6');
 const ContentActions = require('./actions/content-actions.es6');
-const NavStore       = require('./stores/nav-store.es6');
+const RouteStore     = require('./stores/route-store.es6');
 const ContentStore   = require('./stores/content-store.es6');
 
 const Root = React.createFactory(require('../jsx/root.jsx'));
@@ -18,15 +18,15 @@ const Root = React.createFactory(require('../jsx/root.jsx'));
 const state = JSON.parse(Cookies.get(STATE_COOKIE_NAME));
 Cookies.expire(STATE_COOKIE_NAME);
 
-const navStore     = new NavStore(state.route);
+const routeStore     = new RouteStore(state.route);
 const contentStore = new ContentStore(state.content);
 
 // Wire up the stores with the actions.
-navStore.registerActions(NavActions);
+routeStore.registerActions(NavActions);
 contentStore.registerActions(ContentActions);
 
 co(function*() {
-  const routeModel   = yield navStore.getModel();
+  const routeModel   = yield routeStore.getModel();
   const initialIndex = routeModel.get('index');
 
   const contentModel   = yield contentStore.getModel();
@@ -34,7 +34,7 @@ co(function*() {
 
   return {
     navRoutes     : state.navRoutes,
-    navStore      : navStore,
+    routeStore    : routeStore,
     contentStore  : contentStore,
     initialIndex  : initialIndex,
     initialContent: initialContent

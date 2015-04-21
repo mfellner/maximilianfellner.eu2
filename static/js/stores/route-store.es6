@@ -2,7 +2,7 @@ const Rx = require('rx');
 
 const Route = require('./../model/route.es6');
 
-class NavStore {
+class RouteStore {
 
   constructor(model = {}) {
     /**
@@ -60,4 +60,4 @@ class NavStore {
   }
 }
 
-module.exports = NavStore;
+module.exports = RouteStore;

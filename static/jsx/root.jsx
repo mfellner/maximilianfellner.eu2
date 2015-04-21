@@ -20,9 +20,8 @@ class Root extends React.Component {
     this.props.contentStore.subscribe(model => {
       this.setState({content: model.get('content')});
     });
-    this.props.navStore.subscribe(model => {
+    this.props.routeStore.subscribe(model => {
       this.setState({index: model.get('index')});
-      //this.setState({index: model.route.index});
     });
   }
 
@@ -44,7 +43,7 @@ class Root extends React.Component {
 Root.propTypes = {
   className     : React.PropTypes.string,
   navRoutes     : React.PropTypes.array.isRequired,
-  navStore      : React.PropTypes.object.isRequired,
+  routeStore    : React.PropTypes.object.isRequired,
   contentStore  : React.PropTypes.object.isRequired,
   initialIndex  : React.PropTypes.number.isRequired,
   initialContent: React.PropTypes.string.isRequired

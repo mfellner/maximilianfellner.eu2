@@ -44,10 +44,10 @@ class Body extends React.Component {
 }
 
 Body.propTypes = {
-  styles   : React.PropTypes.array,
-  scripts  : React.PropTypes.array,
-  navRoutes: React.PropTypes.array.isRequired,
-  navStore : React.PropTypes.object.isRequired
+  styles    : React.PropTypes.array,
+  scripts   : React.PropTypes.array,
+  navRoutes : React.PropTypes.array.isRequired,
+  routeStore: React.PropTypes.object.isRequired
 };
 
 Body.defaultProps = {
