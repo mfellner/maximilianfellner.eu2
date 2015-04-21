@@ -25,5 +25,6 @@ app
   }));
 
 app.listen(nconf.get('APP_PORT'));
+
 console.log(`running app in ${app.env} mode`);
 console.log(`listening on port ${nconf.get('APP_PORT')}`);

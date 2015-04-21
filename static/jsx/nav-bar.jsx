@@ -2,8 +2,8 @@ const React    = require('react');
 const director = require('director');
 
 const Observables     = require('../../util/observables.es6');
-const NavActions      = require('../js/nav-actions.es6');
-const ContentActions  = require('../js/content-actions.es6');
+const NavActions      = require('../js/actions/nav-actions.es6');
+const ContentActions  = require('../js/actions/content-actions.es6');
 
 /**
  * Component: NavBar

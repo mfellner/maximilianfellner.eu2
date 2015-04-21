@@ -1,6 +1,6 @@
 const Rx = require('rx');
 
-const Route = require('./route.es6');
+const Route = require('./../model/route.es6');
 
 class NavStore {
 

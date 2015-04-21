@@ -1,5 +1,6 @@
-const production = process.env.NODE_ENV === 'production';
+const nconf = require('nconf');
 
+const production = nconf.get('NODE_ENV') === 'production';
 const cdnURL = '//cdnjs.cloudflare.com';
 
 const versions = {

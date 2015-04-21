@@ -8,9 +8,6 @@ const changeCase = require('change-case');
 const config      = require('../config/config');
 const contentCtrl = require('../controllers/content-controller.es6');
 
-const NavStore     = require('../static/js/nav-store');
-const ContentStore = require('../static/js/content-store');
-
 const Body = React.createFactory(require('../static/jsx/body'));
 
 // Set content response for all navigable route paths.
