@@ -12,7 +12,7 @@ class ContentActions {
           if (!Backbone.ajax || !Backbone.$) return Rx.Observable.just(contentModel);
 
           return Rx.Observable.fromPromise(
-            new Content({key: changeCase.param(route.name)})
+            new Content({_id: changeCase.param(route.name)})
               .fetch()
               .then(attrs => contentModel.set(attrs)));
         };

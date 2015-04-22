@@ -35,6 +35,7 @@ gulp.task 'webpack', ['clean'], ->
       'underscore': '_'
       'Backbone'  : 'Backbone'
       'react'     : 'React'
+      'showdown'  : 'Showdown'
     module:
       loaders: [
         {
@@ -66,6 +67,12 @@ gulp.task 'run', ['build'], ->
     execMap:
       'es6': 'babel-node --extensions ".es6" --harmony'
     ext: 'es6 jsx'
+
+
+gulp.task 'clean-db', ->
+  require 'babel/register'
+  config = require './src/config/config.es6'
+  del(config.dbName)
 
 
 gulp.task 'clean', ->

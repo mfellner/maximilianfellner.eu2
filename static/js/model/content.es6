@@ -2,9 +2,9 @@ const Backbone = require('Backbone');
 
 const Content = Backbone.Model.extend({
   urlRoot    : '/api/content',
-  idAttribute: 'key',
+  idAttribute: '_id',
   validate   : (attrs, options) => {
-    if (!attrs || !attrs.key || !attrs.content) {
+    if (!attrs || !attrs._id || !attrs.content) {
       return 'model is invalid';
     }
   }
