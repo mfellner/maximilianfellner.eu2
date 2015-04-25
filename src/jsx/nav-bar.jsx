@@ -27,8 +27,9 @@ class NavBar extends React.Component {
     });
   }
 
-  onRouteClicked(route) {
+  onRouteClicked(route, event) {
     this.props.router.setRoute(route.path);
+    event.preventDefault(); // don't follow href
   }
 
   render() {
@@ -40,7 +41,7 @@ class NavBar extends React.Component {
             const onClick = this.onRouteClicked.bind(this, route);
             return (
               <li key={i} className={this.props.index === i ? 'active' : ''}>
-                <a onClick={onClick}>{route.name}</a>
+                <a onClick={onClick} href={route.path}>{route.name}</a>
               </li>
             );
           }, this)}
