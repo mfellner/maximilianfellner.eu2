@@ -20,7 +20,7 @@ app
   .use(require('./routes/index'))
   .use(require('./routes/api'))
   .use(router.allowedMethods())
-  .use(serve(__dirname + '/../pack', {
+  .use(serve(__dirname + '/../../pack', {
     defer: true
   }));
 

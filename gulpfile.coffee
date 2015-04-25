@@ -9,12 +9,11 @@ autoprefix = require 'less-plugin-autoprefix'
 argv       = require('yargs').argv
 
 src =
-  js  : './static/js/main.es6'
+  js  : './src/client/main.es6'
   less: './static/less/main.less'
 
 dst =
-  css : './static/css/main.min.css'
-  pack: './pack/main.min.js'
+  pack: './pack/'
 
 
 gulp.task 'webpack', ['clean'], ->
@@ -24,7 +23,7 @@ gulp.task 'webpack', ['clean'], ->
   gulp.src src.js
   .pipe webpack
     output:
-      filename: path.basename dst.pack
+      filename: "[hash]#{if argv.production? then '.min' else ''}.js"
     resolve:
       modulesDirectories: [
         'bower_components',
@@ -33,8 +32,10 @@ gulp.task 'webpack', ['clean'], ->
     externals:
       'jquery'    : 'jQuery'
       'underscore': '_'
-      'Backbone'  : 'Backbone'
+      'backbone'  : 'Backbone'
       'react'     : 'React'
+      'rx'        : 'Rx'
+      'cookies-js': 'Cookies'
       'showdown'  : 'Showdown'
     module:
       loaders: [
@@ -57,9 +58,9 @@ gulp.task 'webpack', ['clean'], ->
     plugins: do =>
       plugins = []
       plugins.push new @WebPack.optimize.UglifyJsPlugin() if argv.production?
-      plugins.push new @ExtractText('[name].min.css')
+      plugins.push new @ExtractText("[contenthash]#{if argv.production? then '.min' else ''}.css")
       plugins
-  .pipe gulp.dest(path.dirname dst.pack)
+  .pipe gulp.dest(dst.pack)
 
 
 gulp.task 'run', ['build'], ->
@@ -71,12 +72,12 @@ gulp.task 'run', ['build'], ->
 
 gulp.task 'clean-db', ->
   require 'babel/register'
-  config = require './src/config/config.es6'
+  config = require './src/server/config.es6'
   del(config.dbName)
 
 
 gulp.task 'clean', ->
-  del(path.dirname dst.pack)
+  del(dst.pack)
 
 gulp.task 'build', ['webpack']
 

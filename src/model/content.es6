@@ -1,4 +1,4 @@
-const Backbone = require('Backbone');
+const Backbone = require('backbone');
 
 const Content = Backbone.Model.extend({
   urlRoot    : '/api/content',

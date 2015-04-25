@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "author": "Maximilian Fellner",
   "description": "Personal website of Maximilian Fellner",
-  "main": "./src/server.es6",
+  "main": "./src/server/server.es6",
   "scripts": {
-    "start": "babel-node --extensions \".es6\" --harmony ./src/server.es6",
+    "start": "babel-node --extensions \".es6\" --harmony ./src/server/server.es6",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "node node_modules/.bin/bower -q install"
   },
@@ -18,11 +18,12 @@
   },
   "private": true,
   "dependencies": {
-    "babel": "^4.7.16",
-    "backbone": "^1.1.2",
+    "babel": "4.7.16",
+    "backbone": "1.1.2",
     "change-case": "^2.3.0",
     "co": "^4.5.2",
     "director": "^1.2.8",
+    "glob": "^5.0.5",
     "koa": "^0.18.1",
     "koa-router": "^4.3.2",
     "koa-static": "^1.4.9",
@@ -32,7 +33,8 @@
     "node-jsx": "^0.12.4",
     "node-uuid": "^1.4.3",
     "pouchdb": "^3.4.0",
-    "react": "^0.13.0"
+    "react": "^0.13.1",
+    "rx": "^2.5.2"
   },
   "devDependencies": {
     "babel-core": "^4.7.16",
@@ -40,7 +42,6 @@
     "babel-runtime": "^5.0.0-beta1",
     "bower": "^1.4.1",
     "coffee-script": "^1.9.1",
-    "cookies-js": "^1.2.1",
     "css-loader": "^0.9.1",
     "del": "^1.1.1",
     "extract-text-webpack-plugin": "^0.4.0",
@@ -55,7 +56,7 @@
     "less-plugin-autoprefix": "^1.4.0",
     "less-plugin-clean-css": "^1.5.0",
     "nodemon": "^1.3.7",
-    "react-tools": "^0.13.0",
+    "react-tools": "^0.13.1",
     "showdown": "^0.4.0",
     "style-loader": "^0.8.3",
     "webpack": "^1.7.3",

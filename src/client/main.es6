@@ -7,10 +7,10 @@ const React   = require('react');
 const Cookies = require('cookies-js');
 const co      = require('co');
 
-const NavActions     = require('./actions/nav-actions.es6');
-const ContentActions = require('./actions/content-actions.es6');
-const RouteStore     = require('./stores/route-store.es6');
-const ContentStore   = require('./stores/content-store.es6');
+const NavActions     = require('../actions/nav-actions.es6');
+const ContentActions = require('../actions/content-actions.es6');
+const RouteStore     = require('../stores/route-store.es6');
+const ContentStore   = require('../stores/content-store.es6');
 
 const Root = React.createFactory(require('../jsx/root.jsx'));
 

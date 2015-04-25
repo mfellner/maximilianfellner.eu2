@@ -5,10 +5,10 @@ const moment = require('moment');
 const uuid   = require('node-uuid');
 const changeCase = require('change-case');
 
-const config      = require('../config/config');
-const contentCtrl = require('../controllers/content-controller.es6');
+const config      = require('../config');
+const contentCtrl = require('../controllers/content');
 
-const Body = React.createFactory(require('../../static/jsx/body'));
+const Body = React.createFactory(require('../../jsx/body'));
 
 // Set content response for all navigable route paths.
 for (let route of config.navRoutes) {

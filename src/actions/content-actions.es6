@@ -2,7 +2,7 @@ const Rx         = require('rx');
 const Backbone   = require('backbone');
 const changeCase = require('change-case');
 
-const Content = require('./../model/content.es6');
+const Content = require('../model/content.es6');
 
 class ContentActions {
   static register(updates) {

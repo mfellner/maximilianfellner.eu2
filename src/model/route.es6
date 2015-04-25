@@ -1,4 +1,4 @@
-const Backbone = require('Backbone');
+const Backbone = require('backbone');
 
 const Route = Backbone.Model.extend({
   idAttribute: 'index',

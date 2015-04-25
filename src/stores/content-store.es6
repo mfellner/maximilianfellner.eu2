@@ -1,5 +1,3 @@
-const Rx = require('rx');
-
 const Store   = require('./store.es6');
 const Content = require('./../model/content.es6');
 

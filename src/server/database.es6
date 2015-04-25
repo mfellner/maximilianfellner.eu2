@@ -1,7 +1,7 @@
 const PouchDB = require('pouchdb');
 const fs      = require('mz/fs');
 const co      = require('co');
-const config  = require('../config/config');
+const config  = require('./config');
 
 const db = new PouchDB(config.dbName);
 
