@@ -10,10 +10,10 @@ const versions = {
   jquery    : '2.1.3',
   underscore: '1.8.3',
   backbone  : '1.1.2',
-  react     : '0.13.1',
+  react     : '0.13.2',
   rxjs      : '2.5.2',
   cookies   : '1.2.1',
-  showdown  : '0.4.0'
+  showdown  : '0.5.0'
 };
 
 const config = {
@@ -31,7 +31,7 @@ const config = {
     `${cdnURL}/ajax/libs/backbone.js/${versions.backbone}/backbone${production ? '-min' : ''}.js`,
     `${cdnURL}/ajax/libs/rxjs/${versions.rxjs}/rx.all${production ? '.min' : ''}.js`,
     `${cdnURL}/ajax/libs/Cookies.js/${versions.cookies}/cookies${production ? '.min' : ''}.js`,
-    `${cdnURL}/ajax/libs/showdown/${versions.showdown}/Showdown${production ? '.min' : ''}.js`
+    `${cdnURL}/ajax/libs/showdown/${versions.showdown}/showdown${production ? '.min' : ''}.js`
   ],
   allScripts: function () {
     return this.externalScripts.concat(this.scripts);
