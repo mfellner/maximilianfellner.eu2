@@ -45,7 +45,7 @@ gulp.task 'webpack', ['clean'], ->
         },
         {test: /\.(ttf|eot|svg|woff2?)$/, loader: 'file'},
         {test: /\.jsx$/, loader: 'jsx-loader?harmony'}
-        {test: /\.es6$/, exclude: /node_modules/, loader: 'babel-loader?experimental=optional=runtime'}
+        {test: /\.es6$/, exclude: /node_modules/, loader: 'babel-loader?optional=runtime'}
       ]
     lessLoader:
       lessPlugins: [
