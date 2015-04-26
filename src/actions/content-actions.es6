@@ -1,21 +1,15 @@
 const Rx         = require('rx');
-const Backbone   = require('backbone');
 const changeCase = require('change-case');
-
-const Content = require('../model/content.es6');
+const db         = require('../shared/database.es6');
 
 class ContentActions {
   static register(updates) {
     this.get
       .map(route => {
-        return contentModel => {
-          if (!Backbone.ajax || !Backbone.$) return Rx.Observable.just(contentModel);
-
-          return Rx.Observable.fromPromise(
-            new Content({_id: changeCase.param(route.name)})
-              .fetch()
-              .then(attrs => contentModel.set(attrs)));
-        };
+        return () => {
+          const promise = db.get(changeCase.param(route.name));
+          return Rx.Observable.fromPromise(promise);
+        }
       })
       .subscribe(updates);
   }

@@ -18,7 +18,7 @@ class Root extends React.Component {
 
   componentDidMount() {
     this.props.contentStore.subscribe(model => {
-      this.setState({content: model.get('content')});
+      this.setState({content: model.content});
     });
     this.props.routeStore.subscribe(model => {
       this.setState({index: model.get('index')});

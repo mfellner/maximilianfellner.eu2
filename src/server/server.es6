@@ -11,9 +11,9 @@ const nconf  = require('nconf')
 
 require('node-jsx').install({extension: '.jsx', harmony: true});
 
-// Initialize database with static content.
+// Initialize the database with static content.
 co(function*() {
-  const db = require('./database');
+  const db = require('../shared/database');
   yield db.updateOrCreateContent('home', yield fs.readFile('./static/md/home.md', 'utf8'));
   yield db.updateOrCreateContent('about', yield fs.readFile('./static/md/about.md', 'utf8'));
 }).catch(e => console.error(e));

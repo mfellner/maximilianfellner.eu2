@@ -4,6 +4,7 @@ gulp       = require 'gulp'
 rename     = require 'gulp-rename'
 webpack    = require 'gulp-webpack'
 nodemon    = require 'gulp-nodemon'
+shell      = require 'gulp-shell'
 cleancss   = require 'less-plugin-clean-css'
 autoprefix = require 'less-plugin-autoprefix'
 nconf      = require 'nconf'
@@ -16,6 +17,14 @@ nconf
 src =
   js  : './src/client/main.es6'
   less: './static/less/main.less'
+
+docker =
+  user: 'mfellner'
+  couchdb:
+    name   : 'couchdb'
+    version: '1.6.1'
+    dir    : './database'
+    port   : nconf.get('COUCHDB_PORT')
 
 dst =
   pack: path.normalize nconf.get('STATIC_DIR')
@@ -40,8 +49,10 @@ gulp.task 'webpack', ['clean'], ->
       'backbone'  : 'Backbone'
       'react'     : 'React'
       'rx'        : 'Rx'
+      'pouchdb'   : 'PouchDB'
       'cookies-js': 'Cookies'
       'showdown'  : 'Showdown'
+      './../server/config.es6': 'null' # prevent webpack from requiring this module
     module:
       loaders: [
         {
@@ -73,6 +84,23 @@ gulp.task 'run', ['build'], ->
     execMap:
       'es6': 'babel-node --extensions ".es6" --harmony'
     ext: 'es6 jsx'
+
+
+gulp.task 'docker:build:db', shell.task [
+  "docker build -t #{docker.user}/#{docker.couchdb.name}:#{docker.couchdb.version} #{docker.couchdb.dir}"
+]
+
+
+gulp.task 'docker:run:db', ['docker:build:db'], shell.task [
+  "docker run --rm -p #{docker.couchdb.port}:#{docker.couchdb.port}
+  --name #{docker.couchdb.name} #{docker.user}/#{docker.couchdb.name}:#{docker.couchdb.version}"
+]
+
+
+gulp.task 'docker:clean', shell.task [
+  "docker images --no-trunc=true --filter dangling=true --quiet | xargs docker rmi"
+  "docker ps -a | grep Exit | cut -d ' ' -f 1 | xargs docker rm"
+]
 
 gulp.task 'clean', ->
   del(dst.pack)

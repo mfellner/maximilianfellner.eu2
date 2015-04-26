@@ -1,11 +1,10 @@
-const Store   = require('./store.es6');
-const Content = require('./../model/content.es6');
+const Store = require('./store.es6');
 
 class ContentStore extends Store {
 
   constructor(model = {}) {
 
-    super(new Content(model));
+    super(model);
 
     // The contentModelState subject is subscribed to updates
     // on the content model (actions applied to the model).
@@ -16,7 +15,7 @@ class ContentStore extends Store {
       })
       .concatAll()
       .filter(contentModel => {
-        return contentModel.isValid();
+        return !!contentModel._id;
       })
       .subscribe(this.contentModelState);
   }

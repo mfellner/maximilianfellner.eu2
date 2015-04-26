@@ -1,4 +1,4 @@
-const db = require('../database');
+const db = require('../../shared/database');
 
 module.exports.getPageContent = function*(next) {
   if ('GET' != this.method) return yield next;

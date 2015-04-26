@@ -5,7 +5,7 @@ const moment = require('moment');
 const uuid   = require('node-uuid');
 const changeCase = require('change-case');
 
-const db          = require('../database');
+const db          = require('../../shared/database');
 const config      = require('../config');
 
 const Body = React.createFactory(require('../../jsx/body'));
@@ -23,11 +23,11 @@ function*contentResponse() {
     .first()
     .toPromise();
 
-  let contentModel;
+  let currentContent;
 
   // Request the content for the current route.
   try {
-    contentModel = yield db.get(changeCase.param(currentRoute.name));
+    currentContent = yield db.get(changeCase.param(currentRoute.name));
   } catch (e) {
     console.error('no content for key [%s]', currentRoute.name);
     yield Promise.reject(e);
@@ -36,9 +36,10 @@ function*contentResponse() {
   // Create the initial application state.
   const state = Object.freeze({
     route    : currentRoute,
-    content  : contentModel,
+    content  : currentContent,
     navRoutes: config.navRoutes,
-    dbAddress: config.dbAddress
+    dbAddress: config.dbAddress,
+    dbName   : config.dbName
   });
 
   const props = Object.freeze({
@@ -46,7 +47,7 @@ function*contentResponse() {
     styles         : config.stylesheets,
     navRoutes      : config.navRoutes,
     initialIndex   : currentRoute.index,
-    initialContent : contentModel.content,
+    initialContent : currentContent.content,
     stateCookieName: uuid.v4()
   });
 
