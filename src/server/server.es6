@@ -1,22 +1,25 @@
 const app    = require('koa')();
 const router = require('koa-router')();
+const logger = require('koa-logger')();
 const serve  = require('koa-static');
-const nconf  = require('nconf');
-
-require('node-jsx').install({extension: '.jsx', harmony: true});
-
-nconf
+const co     = require('co');
+const fs     = require('mz/fs');
+const nconf  = require('nconf')
   .argv()
   .env()
   .file({file: 'config.json'});
 
+require('node-jsx').install({extension: '.jsx', harmony: true});
+
+// Initialize database with static content.
+co(function*() {
+  const db = require('./database');
+  yield db.updateOrCreateContent('home', yield fs.readFile('./static/md/home.md', 'utf8'));
+  yield db.updateOrCreateContent('about', yield fs.readFile('./static/md/about.md', 'utf8'));
+}).catch(e => console.error(e));
+
 app
-  .use(function* logger(next) {
-    const start = new Date();
-    yield next;
-    const ms = new Date() - start;
-    console.log('%s %s - %s ms', this.method, this.url, ms);
-  })
+  .use(logger)
   .use(require('./routes/index'))
   .use(require('./routes/api'))
   .use(router.allowedMethods())

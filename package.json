@@ -27,6 +27,7 @@
     "director": "^1.2.8",
     "glob": "^5.0.5",
     "koa": "^0.19.1",
+    "koa-logger": "^1.2.2",
     "koa-router": "^4.3.2",
     "koa-static": "^1.4.9",
     "moment": "^2.10.2",

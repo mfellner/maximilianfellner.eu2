@@ -3,8 +3,10 @@ const path  = require('path');
 const nconf = require('nconf');
 
 const production = nconf.get('NODE_ENV') === 'production';
-const cdnURL    = 'https://cdnjs.cloudflare.com';
-const staticDir = './pack';
+const staticDir  = nconf.get('STATIC_DIR');
+const dbProtocol = nconf.get('COUCHDB_PROTOCOL');
+const dbHost     = nconf.get('COUCHDB_HOST');
+const dbPort     = nconf.get('COUCHDB_PORT');
 
 const versions = {
   jquery    : '2.1.3',
@@ -16,8 +18,10 @@ const versions = {
   showdown  : '0.5.0'
 };
 
+const cdnURL = 'https://cdnjs.cloudflare.com';
+
 const config = {
-  dbName: 'webcontent.db',
+  dbAddress: `${dbProtocol}${dbHost}:${dbPort}/maximilianfellner-eu`,
   navRoutes: [
     {index: 0, name: 'Home', path: '/'},
     {index: 1, name: 'About', path: '/about'}

@@ -6,14 +6,19 @@ webpack    = require 'gulp-webpack'
 nodemon    = require 'gulp-nodemon'
 cleancss   = require 'less-plugin-clean-css'
 autoprefix = require 'less-plugin-autoprefix'
+nconf      = require 'nconf'
 argv       = require('yargs').argv
+
+nconf
+  .env()
+  .file(file: 'config.json');
 
 src =
   js  : './src/client/main.es6'
   less: './static/less/main.less'
 
 dst =
-  pack: './pack/'
+  pack: path.normalize nconf.get('STATIC_DIR')
 
 
 gulp.task 'webpack', ['clean'], ->
@@ -68,13 +73,6 @@ gulp.task 'run', ['build'], ->
     execMap:
       'es6': 'babel-node --extensions ".es6" --harmony'
     ext: 'es6 jsx'
-
-
-gulp.task 'clean-db', ->
-  require 'babel/register'
-  config = require './src/server/config.es6'
-  del(config.dbName)
-
 
 gulp.task 'clean', ->
   del(dst.pack)

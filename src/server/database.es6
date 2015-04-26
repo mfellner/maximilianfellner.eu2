@@ -1,11 +1,9 @@
 const PouchDB = require('pouchdb');
-const fs      = require('mz/fs');
-const co      = require('co');
 const config  = require('./config');
 
-const db = new PouchDB(config.dbName);
+const db = new PouchDB(config.dbAddress);
 
-function *updateOrCreateContent(id, content) {
+db.updateOrCreateContent = function*(id, content) {
   try {
     const doc = yield db.get(id);
 
@@ -21,15 +19,9 @@ function *updateOrCreateContent(id, content) {
         content: content
       });
     } else {
-      console.error(e);
+      yield Promise.reject(e);
     }
   }
-}
-
-co(function*() {
-  yield updateOrCreateContent('home', yield fs.readFile('./static/md/home.md', 'utf8'));
-  yield updateOrCreateContent('about', yield fs.readFile('./static/md/about.md', 'utf8'));
-})
-  .catch(e => console.error(e));
+};
 
 module.exports = db;
