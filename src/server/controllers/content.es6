@@ -1,6 +1,6 @@
 const db = require('../database');
 
-module.exports.pageContent = function*(next) {
+module.exports.getPageContent = function*(next) {
   if ('GET' != this.method) return yield next;
   return this.body = yield db.get(this.params.key);
 };
