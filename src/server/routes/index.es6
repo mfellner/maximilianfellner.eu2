@@ -5,8 +5,9 @@ const moment = require('moment');
 const uuid   = require('node-uuid');
 const changeCase = require('change-case');
 
-const db          = require('../../shared/database');
-const config      = require('../config');
+const db     = require('../../shared/database');
+const config = require('../config');
+const logger = require('../logger');
 
 const Body = React.createFactory(require('../../jsx/body'));
 
@@ -29,7 +30,7 @@ function*contentResponse() {
   try {
     currentContent = yield db.get(changeCase.param(currentRoute.name));
   } catch (e) {
-    console.error('no content for key [%s]', currentRoute.name);
+    logger.log('error', '%d no content for key "%s"', e.status, currentRoute.name);
     yield Promise.reject(e);
   }
 
