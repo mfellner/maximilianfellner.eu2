@@ -19,6 +19,13 @@ class ContentStore extends Store {
       })
       .subscribe(this.contentModelState);
   }
+
+  /**
+   * @returns {Promise} Promise that resolves to the content model.
+   */
+  get() {
+    return this.contentModelState.first().toPromise();
+  }
 }
 
 module.exports = ContentStore;

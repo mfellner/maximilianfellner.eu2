@@ -43,9 +43,11 @@ function contentResponse(navRoutes) {
       .first()
       .toPromise();
 
+    let currentContent;
+
     // Request the content for the current route.
     try {
-      const currentContent = yield db.get(changeCase.param(currentRoute.name));
+      currentContent = yield db.get(changeCase.param(currentRoute.name));
     } catch (e) {
       logger.log('error', '[INDEX] database error on key "%s" (%d)', currentRoute.name, e.status);
       yield Promise.reject(e);
@@ -53,18 +55,17 @@ function contentResponse(navRoutes) {
 
     // Create the initial application state.
     const state = Object.freeze({
-      route: currentRoute,
-      content: currentContent,
+      route : currentRoute,
+      dbName: config.dbName,
       dbPublicAddress: config.dbPublicAddress,
-      dbName: config.dbName
     });
 
     const props = Object.freeze({
-      scripts: config.allScripts(),
-      styles: config.stylesheets,
-      navRoutes: navRoutes,
-      initialIndex: currentRoute.index,
-      initialContent: currentContent.content,
+      styles         : config.stylesheets,
+      scripts        : config.allScripts(),
+      navRoutes      : navRoutes,
+      initialIndex   : currentRoute.index,
+      initialContent : currentContent.content,
       stateCookieName: uuid.v4()
     });
 

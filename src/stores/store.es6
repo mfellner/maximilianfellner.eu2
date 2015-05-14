@@ -23,13 +23,6 @@ class Store {
   }
 
   /**
-   * @returns {Promise} Promise that resolves to the content model.
-   */
-  getModel() {
-    return this.contentModelSource.first().toPromise();
-  }
-
-  /**
    * Register a dispatcher of actions.
    * @param actions {Object} Actions to subscribe to the action receiver.
    */

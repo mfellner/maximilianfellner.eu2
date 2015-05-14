@@ -12,9 +12,8 @@ const ContentStore   = require('../stores/content-store.es6');
 
 const Root = React.createFactory(require('../jsx/root.jsx'));
 
-// Initialize the stores with initial data.
-const routeStore   = new RouteStore(config.route);
-const contentStore = new ContentStore(config.content);
+const routeStore   = new RouteStore();
+const contentStore = new ContentStore();
 
 // Wire up the stores with the actions.
 routeStore.registerActions(NavActions);
@@ -24,18 +23,22 @@ contentStore.registerActions(ContentActions);
 Promise
   .all([
     db.get('routes'),
-    routeStore.getModel(),
-    contentStore.getModel()])
+    routeStore.get(),
+    contentStore.get()])
   .then(([
-    navRoutes,
+    routes,
     routeModel,
     contentModel]) => {
+
+    console.log('[main] routes:', routes);
+    console.log('[main] routeModel:', routeModel);
+    console.log('[main] contentModel:', contentModel);
 
     const initialIndex   = routeModel.get('index');
     const initialContent = contentModel.content;
 
     return {
-      navRoutes     : navRoutes,
+      navRoutes     : routes.content,
       routeStore    : routeStore,
       contentStore  : contentStore,
       initialIndex  : initialIndex,
@@ -45,3 +48,7 @@ Promise
   .then(props => {
     React.render(Root(props), document.getElementById('main'))
   });
+
+// Initialize the stores with initial data.
+NavActions    .navigateTo.onNext(config.route);
+ContentActions.get       .onNext(config.route);
