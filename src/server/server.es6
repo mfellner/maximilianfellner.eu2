@@ -9,14 +9,21 @@ const nconf  = require('nconf')
 
 require('node-jsx').install({extension: '.jsx', harmony: true});
 
-const logger = require('./logger');
-const initDB = require('./db-init');
+const logger = require('../shared/logger.es6');
+const initDB = require('./db-init.es6');
 
 // Initialize the database with static content.
-co(initDB.initStatic()).catch(e => logger.log('error', 'cannot initialize database', e));
+co(initDB.initStatic()).catch(e => logger.log('error', '[SERVER] cannot initialize database', e));
+
+const koaLog = function *(next) {
+  const start = new Date();
+  yield next;
+  const ms = new Date() - start;
+  logger.log('debug', '%s %s - %s', this.method, this.url, ms);
+};
 
 app
-  .use(require('koa-logger')())
+  .use(koaLog)
   .use(require('./routes/index'))
   .use(require('./routes/api'))
   .use(router.allowedMethods())

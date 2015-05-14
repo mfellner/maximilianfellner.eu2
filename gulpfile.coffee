@@ -24,7 +24,12 @@ docker =
     name   : 'couchdb'
     version: '1.6.1'
     dir    : './database'
-    port   : nconf.get('COUCHDB_PORT')
+    port   : nconf.get('COUCHDB_PORT_5984_TCP_PORT')
+  app:
+    name   : 'maximilianfellner.eu'
+    version: '0.1.0'
+    dir    : './'
+    port   : nconf.get('APP_PORT')
 
 dst =
   pack: path.normalize nconf.get('STATIC_DIR')
@@ -52,7 +57,9 @@ gulp.task 'webpack', ['clean'], ->
       'pouchdb'   : 'PouchDB'
       'cookies-js': 'Cookies'
       'showdown'  : 'Showdown'
-      './../server/config.es6': 'null' # prevent webpack from requiring this module
+      'nconf'  : 'null' # prevent webpack from loading this server-side module
+      'winston': 'null' # prevent webpack from loading this server-side module
+      './../server/config.es6': 'null' # prevent webpack from loading this server-side module
     module:
       loaders: [
         {
@@ -86,16 +93,26 @@ gulp.task 'run', ['build'], ->
     ext: 'es6 jsx'
 
 
-gulp.task 'docker:build:db', shell.task [
-  "docker build -t #{docker.user}/#{docker.couchdb.name}:#{docker.couchdb.version} #{docker.couchdb.dir}"
+dockerBuild = (name) -> [
+  "docker build -t #{docker.user}/#{docker[name].name}:#{docker[name].version} #{docker[name].dir}"
 ]
 
-
-gulp.task 'docker:run:db', ['docker:build:db'], shell.task [
-  "docker run --rm -p #{docker.couchdb.port}:#{docker.couchdb.port}
-  --name #{docker.couchdb.name} #{docker.user}/#{docker.couchdb.name}:#{docker.couchdb.version}"
+dockerRun = (name, args = '') -> [
+  "docker run --rm -p #{docker[name].port}:#{docker[name].port}
+  --name #{docker[name].name} #{args} #{docker.user}/#{docker[name].name}:#{docker[name].version}"
 ]
 
+gulp.task 'docker:build:db', shell.task dockerBuild('couchdb')
+
+gulp.task 'docker:run:db', ['docker:build:db'], shell.task dockerRun('couchdb')
+
+gulp.task 'docker:build:app', shell.task dockerBuild('app')
+
+gulp.task 'docker:run:app', ['docker:build:app'], shell.task(
+  dockerRun('app',
+    "--link #{docker.couchdb.name}:#{docker.couchdb.name}
+    -e \"COUCHDB_PUBLIC_ADDR=#{nconf.get('COUCHDB_PUBLIC_ADDR')}\"")
+)
 
 gulp.task 'docker:clean', shell.task [
   "docker images --no-trunc=true --filter dangling=true --quiet | xargs docker rmi"

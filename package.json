@@ -5,9 +5,8 @@
   "description": "Personal website of Maximilian Fellner",
   "main": "./src/server/server.es6",
   "scripts": {
-    "start": "babel-node --extensions \".es6\" --harmony ./src/server/server.es6",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "node node_modules/.bin/bower -q install"
+    "start": "babel-node --harmony ./src/server/server.es6",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -27,7 +26,6 @@
     "director": "^1.2.8",
     "glob": "^5.0.5",
     "koa": "^0.20.0",
-    "koa-logger": "^1.2.2",
     "koa-router": "^4.3.2",
     "koa-static": "^1.4.9",
     "moment": "^2.10.2",

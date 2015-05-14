@@ -1,8 +1,8 @@
 const PouchDB  = require('pouchdb');
+
+const logger   = require('./logger.es6');
 const config   = require('./config.es6');
 const isomorph = require('../util/isomorph.es6');
-
-const remoteDB = new PouchDB(config.dbAddress);
 
 /**
  * Helper function to populate the database with
@@ -11,29 +11,42 @@ const remoteDB = new PouchDB(config.dbAddress);
  * @param {string} id Database ID of the content.
  * @param {object} content
  */
-remoteDB.updateOrCreateContent = function*(id, content) {
+function* updateOrCreateContent(id, content) {
   try {
-    const doc = yield remoteDB.get(id);
+    const doc = yield this.get(id);
 
-    yield remoteDB.put({
+    yield this.put({
       _id    : id,
       _rev   : doc._rev,
       content: content
     });
+
+    logger.log('info', '[PouchDB] updated existing content %s', id);
+
   } catch (e) {
     if (e.error && e.reason === 'missing') {
-      yield remoteDB.put({
+      logger.log('info', '[PouchDB] create missing content %s', id);
+
+      yield this.put({
         _id    : id,
         content: content
       });
     } else {
+      logger.log('error', '[PouchDB]', e);
       yield Promise.reject(e);
     }
   }
-};
+}
 
-// Replicate the remote database in the browser.
+let exportedDB = null;
+
 if (isomorph.isClientside()) {
+  // Replicate the remote database in the browser.
+  logger.log('info', '[PouchDB] NEW %s', config.dbPublicAddress);
+
+  let remoteDB = new PouchDB(config.dbPublicAddress);
+
+  // Use a local database on the client-side.
   const dbName  = `${config.dbName}-local`;
   const localDB = new PouchDB(dbName);
 
@@ -42,7 +55,23 @@ if (isomorph.isClientside()) {
     retry: true
   });
 
-  module.exports = localDB; // Use a local database on the client-side.
+  exportedDB = localDB;
+
 } else {
-  module.exports = remoteDB; // Use the remote database on the server-side.
+  // Directly connect to the remote database on the server-side.
+  logger.log('info', '[PouchDB] NEW %s', config.dbPrivateAddress);
+
+  let remoteDB = new PouchDB(config.dbPrivateAddress);
+  remoteDB.updateOrCreateContent = updateOrCreateContent;
+
+  exportedDB = remoteDB;
 }
+
+exportedDB.info().then(function (result) {
+  logger.log('info', '[PouchDB] connected to %s', result.host || result.db_name);
+  logger.log('debug', '[PouchDB]', result);
+}).catch(function (err) {
+  logger.log('error', '[PouchDB]', err);
+});
+
+module.exports = exportedDB;

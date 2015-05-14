@@ -4,9 +4,9 @@ const nconf = require('nconf');
 
 const production = nconf.get('NODE_ENV') === 'production';
 const staticDir  = nconf.get('STATIC_DIR');
-const dbProtocol = nconf.get('COUCHDB_PROTOCOL');
-const dbHost     = nconf.get('COUCHDB_HOST');
-const dbPort     = nconf.get('COUCHDB_PORT');
+const dbProto    = nconf.get('COUCHDB_PORT_5984_TCP_PROTO');
+const dbAddr     = nconf.get('COUCHDB_PORT_5984_TCP_ADDR');
+const dbPort     = nconf.get('COUCHDB_PORT_5984_TCP_PORT');
 const dbName     = nconf.get('COUCHDB_NAME');
 
 const versions = Object.freeze({
@@ -20,11 +20,15 @@ const versions = Object.freeze({
   showdown  : '0.5.0'
 });
 
+const dbPrivateBaseURL = `${dbProto}://${dbAddr}:${dbPort}`;
+const dbPublicBaseURL = nconf.get('COUCHDB_PUBLIC_ADDR') || dbPrivateBaseURL;
+
 const cdnURL = 'https://cdnjs.cloudflare.com';
 
 const config = Object.freeze({
-  dbName   : dbName,
-  dbAddress: `${dbProtocol}${dbHost}:${dbPort}/${dbName}`,
+  dbName          : dbName,
+  dbPrivateAddress: `${dbPrivateBaseURL}/${dbName}`,
+  dbPublicAddress : `${dbPublicBaseURL}/${dbName}`,
   navRoutes: [
     {index: 0, name: 'Home', path: '/'},
     {index: 1, name: 'About', path: '/about'}

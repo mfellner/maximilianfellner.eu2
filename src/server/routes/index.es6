@@ -1,13 +1,13 @@
 const router = require('koa-router')();
 const React  = require('react');
-const Rx     = require('Rx');
+const Rx     = require('rx');
 const moment = require('moment');
 const uuid   = require('node-uuid');
 const changeCase = require('change-case');
 
-const db     = require('../../shared/database');
-const config = require('../config');
-const logger = require('../logger');
+const db     = require('../../shared/database.es6');
+const config = require('../config.es6');
+const logger = require('../../shared/logger.es6');
 
 const Body = React.createFactory(require('../../jsx/body'));
 
@@ -36,11 +36,11 @@ function*contentResponse() {
 
   // Create the initial application state.
   const state = Object.freeze({
-    route    : currentRoute,
-    content  : currentContent,
-    navRoutes: config.navRoutes,
-    dbAddress: config.dbAddress,
-    dbName   : config.dbName
+    route          : currentRoute,
+    content        : currentContent,
+    navRoutes      : config.navRoutes,
+    dbPublicAddress: config.dbPublicAddress,
+    dbName         : config.dbName
   });
 
   const props = Object.freeze({
