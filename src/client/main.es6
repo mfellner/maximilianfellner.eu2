@@ -30,10 +30,6 @@ Promise
     routeModel,
     contentModel]) => {
 
-    console.log('[main] routes:', routes);
-    console.log('[main] routeModel:', routeModel);
-    console.log('[main] contentModel:', contentModel);
-
     const initialIndex   = routeModel.index;
     const initialContent = contentModel.content;
 

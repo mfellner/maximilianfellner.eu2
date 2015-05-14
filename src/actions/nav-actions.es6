@@ -5,7 +5,7 @@ class NavActions {
     this.navigateTo
       .map(route => {
         return () => {
-          return route;
+          return Promise.resolve(route);
         };
       })
       .subscribe(updates);

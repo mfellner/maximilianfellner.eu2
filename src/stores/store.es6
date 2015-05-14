@@ -20,6 +20,19 @@ class Store {
      * @type {Rx.BehaviorSubject}
      */
     this.contentModelSource = new Rx.BehaviorSubject(model);
+
+    // The contentModelState subject is subscribed to updates
+    // on the content model (actions applied to the model).
+    this.contentModelSource
+      .combineLatest(this.actionReceiver,
+      (contentModel, action)=> {
+        return action(contentModel);
+      })
+      .concatAll()
+      .filter(contentModel => {
+        return Object.keys(contentModel).length > 0;
+      })
+      .subscribe(this.contentModelState);
   }
 
   /**
@@ -36,6 +49,13 @@ class Store {
    */
   subscribe() {
     this.contentModelState.subscribe.apply(this.contentModelState, arguments);
+  }
+
+  /**
+   * @returns {Promise} Promise that resolves to the content model.
+   */
+  get() {
+    return this.contentModelState.first().toPromise();
   }
 }
 
