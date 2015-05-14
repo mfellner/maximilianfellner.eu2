@@ -42,7 +42,8 @@ The web service should now be running on [http://localhost:3000]().
 
     docker run --rm -p 5984:5984 --name couchdb mfellner/couchdb:1.6.1
     docker run --rm -p 3000:3000 --name maximilianfellner.eu --link couchdb:couchdb \
-    -e "COUCHDB_PUBLIC_ADDR=http://192.168.59.103:5984" mfellner/maximilianfellner.eu:0.1.0
+    -e "COUCHDB_PUBLIC_ADDR=http://192.168.59.103:5984" \
+    mfellner/maximilianfellner.eu:0.1.0
 
 `COUCHDB_PUBLIC_ADDR` is the *public* address of the CouchDB instance.
 

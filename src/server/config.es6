@@ -29,10 +29,6 @@ const config = Object.freeze({
   dbName          : dbName,
   dbPrivateAddress: `${dbPrivateBaseURL}/${dbName}`,
   dbPublicAddress : `${dbPublicBaseURL}/${dbName}`,
-  navRoutes: [
-    {index: 0, name: 'Home', path: '/'},
-    {index: 1, name: 'About', path: '/about'}
-  ],
   stylesheets: glob.sync(`${staticDir}/*.css`).map(path.basename),
   scripts    : glob.sync(`${staticDir}/*.js`).map(path.basename),
   externalScripts: [

@@ -21,11 +21,11 @@ function* updateOrCreateContent(id, content) {
       content: content
     });
 
-    logger.log('info', '[PouchDB] updated existing content %s', id);
+    logger.log('info', '[PouchDB] updated existing content "%s"', id);
 
   } catch (e) {
     if (e.error && e.reason === 'missing') {
-      logger.log('info', '[PouchDB] create missing content %s', id);
+      logger.log('info', '[PouchDB] create missing content "%s"', id);
 
       yield this.put({
         _id    : id,
