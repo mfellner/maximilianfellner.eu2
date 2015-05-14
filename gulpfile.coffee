@@ -55,7 +55,7 @@ gulp.task 'webpack', ['clean'], ->
       'rx'        : 'Rx'
       'pouchdb'   : 'PouchDB'
       'cookies-js': 'Cookies'
-      'showdown'  : 'Showdown'
+#      'showdown'  : 'showdown' # currently unavailable at cdnjs
       'nconf'  : 'null' # prevent webpack from loading this server-side module
       'winston': 'null' # prevent webpack from loading this server-side module
       './../server/config.es6': 'null' # prevent webpack from loading this server-side module

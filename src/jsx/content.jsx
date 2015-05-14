@@ -1,5 +1,5 @@
 const React    = require('react');
-const Showdown = require('showdown');
+const showdown = require('showdown');
 
 /**
  * Component: Content
@@ -27,7 +27,7 @@ Content.propTypes = {
 };
 
 Content.defaultProps = {
-  converter: new Showdown.converter()
+  converter: new showdown.Converter()
 };
 
 module.exports = Content;
