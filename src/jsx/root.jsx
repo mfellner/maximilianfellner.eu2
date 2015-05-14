@@ -21,7 +21,7 @@ class Root extends React.Component {
       this.setState({content: model.content});
     });
     this.props.routeStore.subscribe(model => {
-      this.setState({index: model.get('index')});
+      this.setState({index: model.index});
     });
   }
 

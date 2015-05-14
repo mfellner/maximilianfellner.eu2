@@ -34,7 +34,7 @@ Promise
     console.log('[main] routeModel:', routeModel);
     console.log('[main] contentModel:', contentModel);
 
-    const initialIndex   = routeModel.get('index');
+    const initialIndex   = routeModel.index;
     const initialContent = contentModel.content;
 
     return {

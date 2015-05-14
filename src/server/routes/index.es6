@@ -72,7 +72,7 @@ function contentResponse(navRoutes) {
     // Set a temporary cookie that contains the initial application state.
     this.cookies.set(props.stateCookieName, JSON.stringify(state), {
       httpOnly: false,
-      expires: moment().add(5, 'second').toDate()
+      expires : moment().add(5, 'second').toDate()
     });
 
     this.body = yield new Promise(resolve => resolve(React.renderToStaticMarkup(Body(props))));

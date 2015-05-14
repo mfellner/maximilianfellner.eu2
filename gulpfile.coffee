@@ -51,7 +51,6 @@ gulp.task 'webpack', ['clean'], ->
     externals:
       'jquery'    : 'jQuery'
       'underscore': '_'
-      'backbone'  : 'Backbone'
       'react'     : 'React'
       'rx'        : 'Rx'
       'pouchdb'   : 'PouchDB'

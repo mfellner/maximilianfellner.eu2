@@ -4,8 +4,8 @@ class NavActions {
   static register(updates) {
     this.navigateTo
       .map(route => {
-        return routeModel => {
-          return routeModel.set(route);
+        return () => {
+          return route;
         };
       })
       .subscribe(updates);

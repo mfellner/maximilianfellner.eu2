@@ -1,11 +1,10 @@
 const Store = require('./store.es6');
-const Route = require('./../model/route.es6');
 
 class RouteStore extends Store {
 
   constructor(model = {}) {
 
-    super(new Route(model));
+    super(model);
 
     // The contentModelState subject is subscribed to updates
     // on the content model (actions applied to the model).
@@ -15,7 +14,7 @@ class RouteStore extends Store {
         return action(contentModel);
       })
       .filter(contentModel => {
-        return contentModel.isValid();
+        return typeof contentModel.index === 'number'
       })
       .subscribe(this.contentModelState);
   }

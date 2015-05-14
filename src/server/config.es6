@@ -12,7 +12,6 @@ const dbName     = nconf.get('COUCHDB_NAME');
 const versions = Object.freeze({
   jquery    : '2.1.3',
   underscore: '1.8.3',
-  backbone  : '1.1.2',
   react     : '0.13.2',
   rxjs      : '2.5.2',
   pouchdb   : '3.4.0',
@@ -35,7 +34,6 @@ const config = Object.freeze({
     `${cdnURL}/ajax/libs/underscore.js/${versions.underscore}/underscore${production ? '-min' : ''}.js`,
     `${cdnURL}/ajax/libs/jquery/${versions.jquery}/jquery${production ? '.min' : ''}.js`,
     `${cdnURL}/ajax/libs/react/${versions.react}/react${production ? '.min' : ''}.js`,
-    `${cdnURL}/ajax/libs/backbone.js/${versions.backbone}/backbone${production ? '-min' : ''}.js`,
     `${cdnURL}/ajax/libs/rxjs/${versions.rxjs}/rx.all${production ? '.min' : ''}.js`,
     `${cdnURL}/ajax/libs/pouchdb/${versions.pouchdb}/pouchdb${production ? '.min' : ''}.js`,
     `${cdnURL}/ajax/libs/Cookies.js/${versions.cookies}/cookies${production ? '.min' : ''}.js`,
