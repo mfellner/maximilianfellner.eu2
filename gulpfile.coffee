@@ -180,7 +180,9 @@ dockerRun = (name, args = '') -> [
 
 gulp.task 'docker:build:db', shell.task dockerBuild('couchdb')
 
-gulp.task 'docker:run:db', ['docker:build:db'], shell.task dockerRun('couchdb')
+gulp.task 'docker:run:db', ['docker:build:db'], shell.task(
+  dockerRun('couchdb', '-e "COUCHDB_LOG_LEVEL=debug"')
+)
 
 gulp.task 'docker:build:app', ['build'], shell.task dockerBuild('app')
 
@@ -200,7 +202,7 @@ gulp.task 'docker:clean', shell.task [
 # Other tasks
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-gulp.task 'run:watch', ['webpack:client:watch', 'webpack:server:watch'], ->
+gulp.task 'run', ['webpack:client', 'webpack:server'], ->
   nodemon
     script: './build/server/server*.js'
     execMap:
@@ -209,6 +211,9 @@ gulp.task 'run:watch', ['webpack:client:watch', 'webpack:server:watch'], ->
     ignore: ['*']
     watch : ['foobar/']
     ext   : 'foobar'
+
+gulp.task 'run:watch', ['webpack:client:watch', 'webpack:server:watch'], ->
+  shell.task 'npm start'
 
 gulp.task 'clean:client', ->
   del(dst.client)

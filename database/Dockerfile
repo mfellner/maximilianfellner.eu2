@@ -43,6 +43,8 @@ RUN rm -r couchdb/
 # Configure CouchDB
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+COPY couchdb.ini /usr/local/etc/couchdb/local.ini
+
 RUN adduser --disabled-login --disabled-password --no-create-home --gecos "" couchdb && \
     chown -R couchdb:couchdb /usr/local/var/lib/couchdb && \
     chown -R couchdb:couchdb /usr/local/var/log/couchdb && \
@@ -55,7 +57,12 @@ RUN adduser --disabled-login --disabled-password --no-create-home --gecos "" cou
     chmod 0770 /usr/local/etc/couchdb/*.d && \
     ln -s /usr/local/etc/logrotate.d/couchdb /etc/logrotate.d/couchdb
 
-ADD couchdb.ini /usr/local/etc/couchdb/local.ini
+# Must be set to secret values in production!
+ENV COUCHDB_ADMIN_NAME admin
+ENV COUCHDB_ADMIN_PASS password
+ENV COUCHDB_LOG_LEVEL warning
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
 # Configure Docker container
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -66,4 +73,4 @@ USER couchdb
 
 VOLUME /usr/local/var/lib/couchdb
 
-ENTRYPOINT /usr/local/bin/couchdb
+ENTRYPOINT ["entrypoint.sh"]

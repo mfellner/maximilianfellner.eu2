@@ -24,6 +24,8 @@ const cdnURL = 'https://cdnjs.cloudflare.com';
 
 const config = Object.freeze({
   dbName          : dbName,
+  dbUser          : nconf.get('COUCHDB_ADMIN_NAME'),
+  dbPass          : nconf.get('COUCHDB_ADMIN_PASS'),
   dbPrivateAddress: `${dbPrivateBaseURL}/${dbName}`,
   dbPublicAddress : `${dbPublicBaseURL}/${dbName}`,
   stylesheets: glob.sync(`${staticDir}/*.css`).map(path.basename),

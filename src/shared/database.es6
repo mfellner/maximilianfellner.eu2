@@ -67,7 +67,12 @@ if (isomorph.isClientside()) {
   // Directly connect to the remote database on the server-side.
   logger.log('info', '[PouchDB] NEW %s', config.dbPrivateAddress);
 
-  let remoteDB = new PouchDB(config.dbPrivateAddress);
+  let remoteDB = new PouchDB(config.dbPrivateAddress, {
+    auth: {
+      username: config.dbUser,
+      password: config.dbPass
+    }
+  });
   remoteDB.updateOrCreateContent = updateOrCreateContent;
 
   exportedDB = remoteDB;
