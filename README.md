@@ -4,36 +4,35 @@ Personal website of Maximilian Fellner.
 
 ## Development
 
-Install dependencies:
+Build:
 
-```
-npm install
-```
+    npm install
+    gulp build
 
-Build static files:
+Test:
 
-```
-gulp build
-```
+    npm test
 
 Start with live reloading:
 
-```
-gulp run:watch
-```
+    gulp run:watch
 
 The web service should now be running on [http://localhost:3000]().
 
 ## Deployment
 
-#### Static web content
+#### Build server and client code
 
     gulp build --production
 
 #### Docker with gulp
 
-    gulp docker:run:db
-    gulp docker:run:app
+    gulp docker:run
+
+#### Docker with docker-compose
+
+    gulp build --production
+    docker-compose up
 
 #### Docker manually
 
@@ -41,9 +40,10 @@ The web service should now be running on [http://localhost:3000]().
     docker build -t mfellner/maximilianfellner.eu:0.1.0 maximilianfellner.eu
 
     docker run --rm -p 5984:5984 --name couchdb mfellner/couchdb:1.6.1
-    docker run --rm -p 3000:3000 --name maximilianfellner.eu --link couchdb:couchdb \
-    -e "COUCHDB_PUBLIC_ADDR=http://192.168.59.103:5984" \
-    mfellner/maximilianfellner.eu:0.1.0
+    docker run --rm -p 3000:3000 --name maximilianfellner.eu
+        --link couchdb:couchdb \
+        -e "COUCHDB_PUBLIC_ADDR=http://192.168.59.103:5984" \
+        mfellner/maximilianfellner.eu:0.1.0
 
 `COUCHDB_PUBLIC_ADDR` is the *public* address of the CouchDB instance.
 

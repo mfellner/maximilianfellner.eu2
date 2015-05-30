@@ -182,13 +182,15 @@ gulp.task 'docker:build:db', shell.task dockerBuild('couchdb')
 
 gulp.task 'docker:run:db', ['docker:build:db'], shell.task dockerRun('couchdb')
 
-gulp.task 'docker:build:app', shell.task dockerBuild('app')
+gulp.task 'docker:build:app', ['build'], shell.task dockerBuild('app')
 
 gulp.task 'docker:run:app', ['docker:build:app'], shell.task(
   dockerRun('app',
     "--link #{docker.couchdb.name}:#{docker.couchdb.name}
     -e \"COUCHDB_PUBLIC_ADDR=#{nconf.get('COUCHDB_PUBLIC_ADDR')}\"")
 )
+
+gulp.task 'docker:run', ['docker:run:app', 'docker:run:db']
 
 gulp.task 'docker:clean', shell.task [
   "docker images --no-trunc=true --filter dangling=true --quiet | xargs docker rmi"
