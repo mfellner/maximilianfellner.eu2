@@ -1,10 +1,11 @@
 {
-  "APP_PORT": 3000,
+  "APP_PORT": "3000",
+  "APP_PUBLIC_ADDR": "http://192.168.59.103:3000",
   "STATIC_DIR": "./build/client",
+  "COUCHDB_NAME": "content",
   "COUCHDB_PORT_5984_TCP_PROTO": "http",
   "COUCHDB_PORT_5984_TCP_ADDR": "192.168.59.103",
   "COUCHDB_PORT_5984_TCP_PORT": "5984",
-  "COUCHDB_NAME": "content",
   "COUCHDB_PUBLIC_ADDR": "http://192.168.59.103:5984",
   "COUCHDB_ADMIN_NAME": "admin",
   "COUCHDB_ADMIN_PASS": "password"

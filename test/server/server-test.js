@@ -1,25 +1,37 @@
 require('babel/register');
 
-const should = require('should');
-const nconf  = require('nconf')
-  .overrides({
+const supertest = require('supertest');
+const should    = require('should');
+const nconf     = require('nconf').env();
+
+if (!nconf.get('MOCHA_DOCKER')) {
+  // Use local test DB.
+  nconf.overrides({
     'COUCHDB_PRIVATE_ADDR': 'test',
     'COUCHDB_NAME': 'test.db'
   });
+}
 
 // Ignore .svg files.
 require.extensions['.svg'] = function () {return null;};
 
-const server = require('../../src/server/server.es6');
+var request;
+
+before(function (done) {
+  if (nconf.get('MOCHA_DOCKER')) {
+    // Run tests against Docker containers.
+    request = supertest(nconf.get('APP_PUBLIC_ADDR'));
+    done();
+  } else {
+    require('../../src/server/server.es6')
+      .then(function (app) {
+        request = supertest.agent(app);
+        done();
+      });
+  }
+});
 
 describe('Server API', function () {
-
-  before(function (done) {
-    server.then(function (app) {
-      request = require('supertest').agent(app);
-      done();
-    });
-  });
 
   it('returns the database info', function (done) {
     request
@@ -30,13 +42,6 @@ describe('Server API', function () {
 });
 
 describe('Server routes', function () {
-
-  before(function (done) {
-    server.then(function (app) {
-      request = require('supertest').agent(app);
-      done();
-    });
-  });
 
   it('returns the index page', function (done) {
     request

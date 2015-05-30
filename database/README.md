@@ -8,7 +8,7 @@
 
 Create a data-only container [1]:
 
-    docker run -p 5984:5984 --name couchdb-data --entrypoint="echo" mfellner/couchdb:1.6.1
+    docker run --name couchdb-data --entrypoint="echo" mfellner/couchdb:1.6.1
 
 Run the database container:
 

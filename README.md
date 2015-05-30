@@ -19,6 +19,17 @@ Start with live reloading:
 
 The web service should now be running on [http://localhost:3000]().
 
+## Testing
+
+    npm test
+    
+#### Run tests against Docker
+
+    docker-compose up
+    MOCHA_DOCKER=true APP_PUBLIC_ADDR=http://192.168.59.103:3000 npm test
+
+*APP_PUBLIC_ADDR* is the address of the app's Docker container on the local host.
+
 ## Deployment
 
 #### Build server and client code
@@ -31,8 +42,14 @@ The web service should now be running on [http://localhost:3000]().
 
 #### Docker with docker-compose
 
+    export COUCHDB_ADMIN_NAME="admin"
+    export COUCHDB_ADMIN_PASS="password"
+    export COUCHDB_PUBLIC_ADDR="http://192.168.59.103:5984"
+
     gulp build --production
     docker-compose up
+
+*COUCHDB_PUBLIC_ADDR* is the address of the database's Docker container on the local host.
 
 #### Docker manually
 
