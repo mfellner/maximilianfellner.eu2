@@ -1,4 +1,4 @@
-# maximilianfellner.eu 2
+# maximilianfellner.eu 2 [![Build Status](https://travis-ci.org/mfellner/maximilianfellner.eu2.svg?branch=master)](https://travis-ci.org/mfellner/maximilianfellner.eu2)
 
 Personal website of Maximilian Fellner.
 
@@ -19,7 +19,7 @@ gulp build
 Start with live reloading:
 
 ```
-gulp run
+gulp run:watch
 ```
 
 The web service should now be running on [http://localhost:3000]().
