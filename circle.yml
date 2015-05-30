@@ -12,7 +12,7 @@ dependencies:
 
 test:
   override:
-    - docker compose up
+    - docker-compose up
     - npm test:
         environment:
           MOCHA_DOCKER: true
