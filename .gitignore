@@ -80,4 +80,6 @@ bower_components
 .bower-registry
 .bower-tmp
 
+### Project files ###
 build/
+test.db

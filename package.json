@@ -6,7 +6,7 @@
   "main": "./src/server/server.es6",
   "scripts": {
     "start": "node --harmony ./build/server/server*.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/mocha/bin/mocha --harmony --recursive -u bdd -R spec test/"
   },
   "repository": {
     "type": "git",
@@ -30,7 +30,6 @@
     "moment": "^2.10.3",
     "mz": "^1.3.0",
     "nconf": "^0.7.1",
-    "node-jsx": "^0.13.3",
     "node-uuid": "^1.4.3",
     "pouchdb": "^3.5.0",
     "react": "^0.13.3",
@@ -59,9 +58,13 @@
     "less-loader": "^2.2.0",
     "less-plugin-autoprefix": "^1.4.0",
     "less-plugin-clean-css": "^1.5.0",
+    "mocha": "^2.2.5",
     "nodemon": "^1.3.7",
+    "proxyquire": "^1.5.0",
     "react-tools": "^0.13.3",
+    "should": "^6.0.3",
     "style-loader": "^0.12.2",
+    "supertest": "^1.0.1",
     "webpack": "^1.9.6",
     "yargs": "^3.9.0"
   }

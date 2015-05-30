@@ -17,8 +17,8 @@ const versions = Object.freeze({
   showdown  : '1.0.0-alpha.2'
 });
 
-const dbPrivateBaseURL = `${dbProto}://${dbAddr}:${dbPort}`;
-const dbPublicBaseURL = nconf.get('COUCHDB_PUBLIC_ADDR') || dbPrivateBaseURL;
+const dbPrivateBaseURL = nconf.get('COUCHDB_PRIVATE_ADDR') || `${dbProto}://${dbAddr}:${dbPort}`;
+const dbPublicBaseURL  = nconf.get('COUCHDB_PUBLIC_ADDR')  || dbPrivateBaseURL;
 
 const cdnURL = 'https://cdnjs.cloudflare.com';
 

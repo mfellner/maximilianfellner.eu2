@@ -8,13 +8,11 @@ const nconf  = require('nconf')
   .env()
   .file({file: 'config.json'});
 
-//require('node-jsx').install({extension: '.jsx', harmony: true});
+const logger = require('../shared/logger.es6');
+const initDB = require('./db-init.es6');
 
-const logger      = require('../shared/logger.es6');
-const initDB      = require('./db-init.es6');
-
-const indexRoute  = require('./routes/index.es6');
-const apiRoute    = require('./routes/api.es6');
+const indexRoute = require('./routes/index.es6');
+const apiRoute   = require('./routes/api.es6');
 
 function* koaLog(next) {
   const start = new Date();
@@ -23,7 +21,7 @@ function* koaLog(next) {
   logger.log('debug', '%s %s %d - %s ms', this.method, this.url, this.status, ms);
 }
 
-co(function*() {
+module.exports = co(function*() {
   // Initialize the database with static content.
   try {
     yield initDB.init();
@@ -40,11 +38,11 @@ co(function*() {
       defer: true
     }));
 
-  app.listen(nconf.get('APP_PORT'));
-
   logger.log('info', '[SERVER] running app in %s mode', app.env);
-  logger.log('info', '[SERVER] __dirname: %s', __dirname);
   logger.log('info', '[SERVER] listening on port %s', nconf.get('APP_PORT'));
+
+  return app.listen(nconf.get('APP_PORT'));
+
 }).catch(e => {
   logger.log('error', '[SERVER]', e)
 });
