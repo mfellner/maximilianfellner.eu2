@@ -9,10 +9,12 @@ dependencies:
   override:
     - sudo pip install --upgrade docker-compose
     - npm install
+    - docker-compose build
+    - docker-compose install
 
 test:
   override:
-    - docker-compose up
+    - docker-compose -p ccitest up
     - npm test:
         environment:
           MOCHA_DOCKER: true

@@ -4,10 +4,12 @@ const supertest = require('supertest');
 const should    = require('should');
 const nconf     = require('nconf').env();
 
-if (!nconf.get('MOCHA_DOCKER')) {
+const dockerTest = !!process.env.MOCHA_DOCKER;
+
+if (!dockerTest) {
   // Use local test DB.
   nconf.overrides({
-    'COUCHDB_PRIVATE_ADDR': 'test',
+    'COUCHDB_PRIVATE_ADDR': './test',
     'COUCHDB_NAME': 'test.db'
   });
 }
@@ -18,7 +20,7 @@ require.extensions['.svg'] = function () {return null;};
 var request;
 
 before(function (done) {
-  if (nconf.get('MOCHA_DOCKER')) {
+  if (dockerTest) {
     // Run tests against Docker containers.
     request = supertest(nconf.get('APP_PUBLIC_ADDR'));
     done();
