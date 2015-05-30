@@ -14,6 +14,8 @@ if (!dockerTest) {
   });
 }
 
+const server = require('../../src/server/server.es6');
+
 // Ignore .svg files.
 require.extensions['.svg'] = function () {return null;};
 
@@ -25,11 +27,10 @@ before(function (done) {
     request = supertest(nconf.get('APP_PUBLIC_ADDR'));
     done();
   } else {
-    require('../../src/server/server.es6')
-      .then(function (app) {
-        request = supertest.agent(app);
-        done();
-      });
+    server.then(function (app) {
+      request = supertest.agent(app.listen(nconf.get('APP_PORT')));
+      done();
+    });
   }
 });
 
