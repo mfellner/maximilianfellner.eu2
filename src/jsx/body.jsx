@@ -25,7 +25,7 @@ class Body extends React.Component {
         })}
         </head>
         <body>
-          <main id="main" className="container" dangerouslySetInnerHTML={{
+          <main id="main" dangerouslySetInnerHTML={{
             __html: React.renderToString(Root(rootProps))
           }}/>
           <script dangerouslySetInnerHTML={{

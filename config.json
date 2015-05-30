@@ -1,6 +1,6 @@
 {
   "APP_PORT": 3000,
-  "STATIC_DIR": "./pack",
+  "STATIC_DIR": "./build/client",
   "COUCHDB_PORT_5984_TCP_PROTO": "http",
   "COUCHDB_PORT_5984_TCP_ADDR": "192.168.59.103",
   "COUCHDB_PORT_5984_TCP_PORT": "5984",

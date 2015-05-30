@@ -54,6 +54,12 @@ if (isomorph.isClientside()) {
     live : true,
     retry: true
   });
+  //.on('complete', info => logger.log('info', '[PouchDB] complete', info))
+  //.on('active', () => logger.log('info', '[PouchDB] active'))
+  //.on('paused', () => logger.log('info', '[PouchDB] paused'))
+  //.on('change', info => logger.log('info', '[PouchDB] change', info))
+  //.on('denied', info => logger.log('error', '[PouchDB] denied', info))
+  //.on('error', err => logger.log('error', '[PouchDB] error', err));
 
   exportedDB = localDB;
 
@@ -67,10 +73,10 @@ if (isomorph.isClientside()) {
   exportedDB = remoteDB;
 }
 
-exportedDB.info().then(function (result) {
+exportedDB.info().then(result => {
   logger.log('info', '[PouchDB] connected to %s', result.host || result.db_name);
   logger.log('debug', '[PouchDB]', result);
-}).catch(function (err) {
+}).catch(err => {
   logger.log('error', '[PouchDB]', err);
 });
 

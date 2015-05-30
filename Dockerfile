@@ -15,7 +15,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Install Node
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ENV NODE_VERSION 0.12.2
+ENV NODE_VERSION 0.12.4
 
 RUN wget https://nodejs.org/dist/latest/node-v${NODE_VERSION}-linux-x64.tar.gz
 
@@ -35,16 +35,15 @@ RUN adduser --disabled-login --disabled-password --gecos "" node
 
 WORKDIR /home/node
 
-ADD package.json package.json
+COPY package.json package.json
 
 RUN npm install --production
 
 # Add source files
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ADD pack/ pack/
-ADD src/ src/
-ADD static/ static/
+COPY build/ build/
+COPY static/ static/
 
 # Set permissions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,7 +56,7 @@ RUN chown -R node:node /home/node && \
 
 ENV NODE_ENV production
 ENV APP_PORT 3000
-ENV STATIC_DIR ./pack
+ENV STATIC_DIR ./build/client
 ENV COUCHDB_NAME content
 ENV COUCHDB_PORT_5984_TCP_PROTO http
 

@@ -9,7 +9,7 @@ const db     = require('../../shared/database.es6');
 const config = require('../config.es6');
 const logger = require('../../shared/logger.es6');
 
-const Body = React.createFactory(require('../../jsx/body'));
+const Body = React.createFactory(require('../../jsx/body.jsx'));
 
 /**
  * Initialize the index route for all navigation routes.
