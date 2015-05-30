@@ -33,17 +33,17 @@ RUN adduser --disabled-login --disabled-password --gecos "" node
 # Install application dependencies
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-WORKDIR /home/node
+COPY package.json /home/node/package.json
 
-COPY package.json package.json
+WORKDIR /home/node
 
 RUN npm install --production
 
 # Add source files
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-COPY build/ build/
-COPY static/ static/
+COPY build/ /home/node/build/
+COPY static/ /home/node/static/
 
 # Set permissions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
