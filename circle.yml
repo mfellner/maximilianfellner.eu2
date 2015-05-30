@@ -9,6 +9,7 @@ dependencies:
   override:
     - sudo pip install --upgrade docker-compose
     - npm install
+    - ./node_modules/.bin/gulp build --production
     - docker-compose build
     - docker-compose install
 
