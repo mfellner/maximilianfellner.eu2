@@ -11,7 +11,7 @@ dependencies:
     - npm install
     - ./node_modules/.bin/gulp build --production
     - docker-compose build
-    - docker-compose install
+    - docker-compose pull
 
 test:
   override:
