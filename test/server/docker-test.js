@@ -14,5 +14,5 @@ if (process.env.MOCHA_DOCKER && process.env.MOCHA_DOCKER !== 'false') {
     done();
   });
 
-  require('./server-test')(function () { return request;});
+  require('./testcases')(function () { return request;});
 }

@@ -1,56 +1,30 @@
-const should = require('should');
+if (!process.env.MOCHA_DOCKER || process.env.MOCHA_DOCKER === 'false') {
+  require('babel/register');
+  const del       = require('del');
+  const supertest = require('supertest');
+  const nconf     = require('nconf')
+    .env()
+    .overrides({
+      'COUCHDB_PRIVATE_ADDR': './test',
+      'COUCHDB_NAME': 'test.db'
+    });
 
-module.exports = function (request) {
+  // Ignore .svg files.
+  require.extensions['.svg'] = function () {return null;};
 
-  describe('Server API', function () {
+  del.sync('./test/test.db'); // Delete test database.
 
-    it('returns the database info', function (done) {
-      request()
-        .get('/api/db')
-        .expect('Content-Type', /json/)
-        .expect(200, done);
+  const logger = require('../../src/server/logger.es6');
+  const server = require('../../src/server/server.es6');
+
+  var request;
+
+  before(function (done) {
+    server.then(function (app) {
+      request = supertest.agent(app.listen());
+      done();
     });
   });
 
-  describe('Server routes', function () {
-
-    it('returns the index page', function (done) {
-      request()
-        .get('/')
-        .expect('Content-Type', /html/)
-        .expect(200, done);
-    });
-
-    it('returns the about page', function (done) {
-      request()
-        .get('/about')
-        .expect('Content-Type', /html/)
-        .expect(200, done);
-    });
-
-    it('sets a cookie', function (done) {
-      request()
-        .get('/')
-        .end(function (err, res) {
-          should.not.exist(err);
-
-          res.headers['set-cookie'].should
-            .be.instanceof(Array).and
-            .have.lengthOf(1);
-
-          res.headers['set-cookie'][0].should.match(/.+=.+;/);
-
-          const cookie = JSON.parse(res
-            .headers['set-cookie'][0]
-            .split(';')[0]
-            .split('=')[1]);
-
-          cookie.should.have.property('dbName').which.is.a.String;
-          cookie.should.have.property('dbPublicAddress').which.is.a.String;
-          cookie.should.have.property('route').which.is.a.Object;
-          cookie.route.should.have.property('path').which.is.exactly('/');
-          done();
-        });
-    });
-  });
-};
+  require('./testcases')(function () { return request;});
+}

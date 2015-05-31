@@ -21,8 +21,6 @@ function* koaLog(next) {
 }
 
 function*initKoa() {
-  logger.log('debug', '[SERVER] initKoa');
-
   try {
     // Initialize the database with static content.
     yield require('./db-init.es6').init();
