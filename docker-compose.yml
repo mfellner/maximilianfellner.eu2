@@ -4,7 +4,7 @@ data:
 db:
   build: database
   ports:
-    - "5984"
+    - "5988:5984"
   volumes_from:
     - data
 app:
@@ -12,9 +12,9 @@ app:
   links:
     - db:couchdb
   ports:
-    - "3000"
+    - "3000:3000"
   environment:
     - COUCHDB_ADMIN_NAME
     - COUCHDB_ADMIN_PASS
     - COUCHDB_PUBLIC_URL
-    - COUCHDB_PUBLIC_PORT
+    - COUCHDB_PUBLIC_PORT: "5988"
