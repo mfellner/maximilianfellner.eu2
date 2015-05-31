@@ -22,11 +22,10 @@ dependencies:
     - docker save cci_app > ~/docker/cci_app.tar
   cache_directories:
     - "~/docker"
-    - "~/node_modules"
 
 test:
   override:
-    - docker-compose -p cci up --no-color
+    - docker-compose -p cci up -d --no-color
     - npm test:
         environment:
           MOCHA_DOCKER: true
