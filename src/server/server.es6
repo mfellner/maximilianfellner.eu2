@@ -22,6 +22,14 @@ function* koaLog(next) {
 
 function*initKoa() {
   logger.log('debug', '[SERVER] initKoa');
+
+  try {
+    // Initialize the database with static content.
+    yield require('./db-init.es6').init();
+  } catch (e) {
+    logger.log('error', '[SERVER] cannot initialize database', e)
+  }
+
   return koa()
     .use(koaLog)
     .use(yield indexRoute.init())
@@ -33,13 +41,6 @@ function*initKoa() {
 }
 
 function*appRun() {
-  try {
-    // Initialize the database with static content.
-    yield require('./db-init.es6').init();
-  } catch (e) {
-    logger.log('error', '[SERVER] cannot initialize database', e)
-  }
-
   const app = yield initKoa();
   app.listen(nconf.get('APP_PORT'));
 

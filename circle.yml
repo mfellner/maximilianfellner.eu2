@@ -4,6 +4,10 @@ machine:
     - docker
   environment:
     COUCHDB_NAME: ccitest
+    COUCHDB_PUBLIC_URL: http://localhost
+    COUCHDB_PUBLIC_PORT: 5988
+    APP_PUBLIC_URL: http://localhost
+    APP_PUBLIC_PORT: 3000
 
 dependencies:
   override:
@@ -15,14 +19,7 @@ dependencies:
 
 test:
   override:
-    - docker-compose --no-color up:
-        environment:
-          COUCHDB_PUBLIC_URL: http://localhost
-          COUCHDB_PUBLIC_PORT: 5988
+    - docker-compose --no-color up
     - npm test:
         environment:
           MOCHA_DOCKER: true
-          APP_PUBLIC_URL: http://localhost
-          APP_PUBLIC_PORT: 3000
-          COUCHDB_PUBLIC_URL: http://localhost
-          COUCHDB_PUBLIC_PORT: 5988
