@@ -19,7 +19,7 @@ dependencies:
 
 test:
   override:
-    - docker-compose --no-color up
+    - docker-compose up --no-color
     - npm test:
         environment:
           MOCHA_DOCKER: true
