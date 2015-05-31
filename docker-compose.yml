@@ -7,6 +7,9 @@ db:
     - "5988:5984"
   volumes_from:
     - data
+  environment:
+    - COUCHDB_ADMIN_NAME
+    - COUCHDB_ADMIN_PASS
 app:
   build: .
   links:

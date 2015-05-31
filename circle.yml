@@ -14,12 +14,19 @@ dependencies:
     - sudo pip install --upgrade docker-compose
     - npm install
     - ./node_modules/.bin/gulp build --production
-    - docker-compose build
-    - docker-compose pull
+    - if [[ -e ~/docker/cci_app.tar ]]; then docker load -i ~/docker/cci_app.tar; fi
+    - if [[ -e ~/docker/cci_db.tar ]]; then docker load -i ~/docker/cci_db.tar; fi
+    - docker-compose -p cci build
+    - mkdir -p ~/docker
+    - docker save cci_db > ~/docker/cci_db.tar
+    - docker save cci_app > ~/docker/cci_app.tar
+  cache_directories:
+    - "~/docker"
+    - "~/node_modules"
 
 test:
   override:
-    - docker-compose up --no-color
+    - docker-compose -p cci up --no-color
     - npm test:
         environment:
           MOCHA_DOCKER: true
