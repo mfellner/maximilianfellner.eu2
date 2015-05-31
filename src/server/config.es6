@@ -18,7 +18,8 @@ const versions = Object.freeze({
 });
 
 const dbPrivateBaseURL = nconf.get('COUCHDB_PRIVATE_ADDR') || `${dbProto}://${dbAddr}:${dbPort}`;
-const dbPublicBaseURL  = nconf.get('COUCHDB_PUBLIC_ADDR')  || dbPrivateBaseURL;
+const dbPublicBaseURL  = `${nconf.get('COUCHDB_PUBLIC_URL')}:${nconf.get('COUCHDB_PUBLIC_PORT')}`;
+const appPublicURL     = `${nconf.get('APP_PUBLIC_URL')}:${nconf.get('APP_PUBLIC_PORT')}`;
 
 const cdnURL = 'https://cdnjs.cloudflare.com';
 
@@ -28,6 +29,7 @@ const config = Object.freeze({
   dbPass          : nconf.get('COUCHDB_ADMIN_PASS'),
   dbPrivateAddress: `${dbPrivateBaseURL}/${dbName}`,
   dbPublicAddress : `${dbPublicBaseURL}/${dbName}`,
+  appPublicAddress: `${appPublicURL}`,
   stylesheets: glob.sync(`${staticDir}/*.css`).map(path.basename),
   scripts    : glob.sync(`${staticDir}/*.js`).map(path.basename),
   externalScripts: [

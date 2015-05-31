@@ -202,7 +202,9 @@ gulp.task 'docker:clean', shell.task [
 # Other tasks
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-gulp.task 'run', ['webpack:client', 'webpack:server'], ->
+gulp.task 'run', ['webpack:client', 'webpack:server'], shell.task ['npm start']
+
+gulp.task 'run:watch', ['webpack:client:watch', 'webpack:server:watch'], ->
   nodemon
     script: './build/server/server*.js'
     execMap:
@@ -211,9 +213,6 @@ gulp.task 'run', ['webpack:client', 'webpack:server'], ->
     ignore: ['*']
     watch : ['foobar/']
     ext   : 'foobar'
-
-gulp.task 'run:watch', ['webpack:client:watch', 'webpack:server:watch'], ->
-  shell.task 'npm start'
 
 gulp.task 'clean:client', ->
   del(dst.client)

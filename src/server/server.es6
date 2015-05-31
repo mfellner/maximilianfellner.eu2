@@ -9,7 +9,6 @@ const nconf  = require('nconf')
   .file({file: 'config.json'});
 
 const logger = require('../shared/logger.es6');
-const initDB = require('./db-init.es6');
 
 const indexRoute = require('./routes/index.es6');
 const apiRoute   = require('./routes/api.es6');
@@ -21,13 +20,8 @@ function* koaLog(next) {
   logger.log('debug', '%s %s %d - %s ms', this.method, this.url, this.status, ms);
 }
 
-const promise = co(function*() {
-  // Initialize the database with static content.
-  try {
-    yield initDB.init();
-  } catch (e) {
-    logger.log('error', '[SERVER] cannot initialize database', e)
-  }
+function*initKoa() {
+  console.log('initKoa');
 
   return koa()
     .use(koaLog)
@@ -37,18 +31,27 @@ const promise = co(function*() {
     .use(serve(nconf.get('STATIC_DIR'), {
       defer: true
     }));
-}).catch(e => {
-  logger.log('error', '[SERVER]', e)
-});
+}
+
+function*appRun() {
+  try {
+    // Initialize the database with static content.
+    yield require('./db-init.es6').init();
+  } catch (e) {
+    logger.log('error', '[SERVER] cannot initialize database', e)
+  }
+
+  const app = yield initKoa();
+  app.listen(nconf.get('APP_PORT'));
+
+  logger.log('info', '[SERVER] running app in %s mode', app.env);
+  logger.log('info', '[SERVER] listening on port %s', nconf.get('APP_PORT'));
+}
+
+const errorLog = e => logger.log('error', '[SERVER]', e);
 
 if (require.main === module) {
-
-  promise.then(function (app) {
-
-    app.listen(nconf.get('APP_PORT'));
-    logger.log('info', '[SERVER] running app in %s mode', app.env);
-    logger.log('info', '[SERVER] listening on port %s', nconf.get('APP_PORT'));
-  });
+  co(appRun).catch(errorLog);
 } else {
-  module.exports = promise;
+  module.exports = co(initKoa).catch(errorLog);
 }
