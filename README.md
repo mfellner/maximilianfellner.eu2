@@ -1,4 +1,4 @@
-# maximilianfellner.eu 2 [![Build Status](https://travis-ci.org/mfellner/maximilianfellner.eu2.svg?branch=master)](https://travis-ci.org/mfellner/maximilianfellner.eu2)
+# maximilianfellner.eu 2 [![Build Status](https://travis-ci.org/mfellner/maximilianfellner.eu2.svg?branch=master)](https://travis-ci.org/mfellner/maximilianfellner.eu2) [![Circle CI](https://circleci.com/gh/mfellner/maximilianfellner.eu2.svg?style=svg)](https://circleci.com/gh/mfellner/maximilianfellner.eu2)
 
 Personal website of Maximilian Fellner.
 
