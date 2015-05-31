@@ -17,6 +17,7 @@ if (!process.env.MOCHA_DOCKER || process.env.MOCHA_DOCKER === 'false') {
 
   before(function (done) {
     server.then(function (app) {
+      console.log('[local-test] server.then');
       request = supertest.agent(app.listen(nconf.get('APP_PORT')));
       done();
     });

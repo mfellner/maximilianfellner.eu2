@@ -21,8 +21,7 @@ function* koaLog(next) {
 }
 
 function*initKoa() {
-  console.log('initKoa');
-
+  logger.log('debug', '[SERVER] initKoa');
   return koa()
     .use(koaLog)
     .use(yield indexRoute.init())
