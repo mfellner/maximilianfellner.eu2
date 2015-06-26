@@ -11,10 +11,10 @@ const dbName     = nconf.get('COUCHDB_NAME');
 
 const versions = Object.freeze({
   react     : '0.13.3',
-  rxjs      : '2.5.2',
-  pouchdb   : '3.5.0',
+  rxjs      : '2.5.3',
+  pouchdb   : '3.6.0',
   cookies   : '1.2.1',
-  showdown  : '1.0.0-alpha.2'
+  showdown  : '1.1.0'
 });
 
 const dbPrivateBaseURL = nconf.get('COUCHDB_PRIVATE_ADDR') || `${dbProto}://${dbAddr}:${dbPort}`;

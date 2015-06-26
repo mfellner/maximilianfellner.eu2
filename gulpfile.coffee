@@ -63,8 +63,12 @@ clientConf =
         loader: ExtractText.extract('style', 'css!less?strictMath')
       },
       {test: /\.(ttf|eot|svg|woff2?)$/, loader: 'file'},
-      {test: /\.jsx$/, loader: 'jsx-loader?harmony'}
-      {test: /\.es6$/, exclude: /node_modules/, loader: 'babel-loader?optional=runtime'}
+      {
+        test: /\.(jsx|es6)$/, exclude: /node_modules/, loader: 'babel-loader',
+        query:
+          optional: ['runtime'],
+          stage: 0
+      }
     ]
   lessLoader:
     lessPlugins: [
@@ -81,8 +85,6 @@ clientConf =
     plugins.push new ExtractText("[contenthash]#{if argv.production? then '.min' else ''}.css")
     plugins
   externals:
-#    'jquery'    : 'jQuery'
-#    'underscore': '_'
     'react'     : 'React'
     'rx'        : 'Rx'
     'pouchdb'   : 'PouchDB'
@@ -108,10 +110,14 @@ serverConf =
     ]
   module:
     loaders: [
-      {test: /\.(ttf|eot|svg|woff2?)$/, loader: 'file'},
-      {test: /\.jsx$/, loader: 'jsx-loader?harmony'}
-      {test: /\.es6$/, exclude: /node_modules/, loader: 'babel-loader?optional=runtime'}
       {test: /\.json$/, loader: 'json-loader'},
+      {test: /\.(ttf|eot|svg|woff2?)$/, loader: 'file'},
+      {
+        test: /\.(jsx|es6)$/, exclude: /node_modules/, loader: 'babel-loader',
+        query:
+          optional: ['runtime'],
+          stage: 0
+      }
     ]
   plugins: [
     new webpack.IgnorePlugin(/client\//, /shared/)
