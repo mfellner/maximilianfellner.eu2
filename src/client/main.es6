@@ -2,7 +2,7 @@ import 'bootstrap/less/bootstrap.less';
 
 import React from 'react';
 
-import db             from '../shared/database.es6';
+import db             from './database.es6';
 import config         from './config.es6';
 import NavActions     from '../actions/nav-actions.es6';
 import ContentActions from '../actions/content-actions.es6';

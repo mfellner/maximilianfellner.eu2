@@ -1,5 +1,5 @@
 import fs from 'mz/fs';
-import db from '../shared/database.es6';
+import db from './database.es6';
 
 /**
  * Initialize the database with static content.

@@ -5,9 +5,9 @@ import moment from 'moment';
 import uuid   from 'node-uuid';
 import changeCase from 'change-case';
 
-import db     from '../../shared/database.es6';
+import db     from '../database.es6';
 import config from '../config.es6';
-import logger from '../../shared/logger.es6';
+import logger from '../logger.es6';
 import body   from '../../jsx/body.jsx';
 
 const router = Router();

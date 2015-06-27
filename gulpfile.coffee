@@ -46,6 +46,7 @@ dst =
 # WebPack tasks
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# Configuration for client bundle.
 clientConf =
   entry : src.js.client
   output:
@@ -80,6 +81,7 @@ clientConf =
     ]
   plugins: do =>
     plugins = []
+    # Ignore all server JavaScript.
     plugins.push new webpack.IgnorePlugin(/server\//, /shared/)
     plugins.push new webpack.optimize.UglifyJsPlugin() if argv.production?
     plugins.push new ExtractText("[contenthash]#{if argv.production? then '.min' else ''}.css")
@@ -91,13 +93,7 @@ clientConf =
     'cookies-js': 'Cookies'
     'showdown'  : 'showdown'
 
-serverExternals = ->
-  fs.readdirSync('node_modules')
-  .filter (m) -> m.match /^[a-z0-9-]+$/i;
-  .map (m) -> "#{m}": "commonjs #{m}"
-  .concat
-      'mz/fs': 'commonjs mz/fs'
-
+# Configuration for server bundle.
 serverConf =
   entry : src.js.server
   output:
@@ -120,10 +116,15 @@ serverConf =
       }
     ]
   plugins: [
+    # Ignore all client JavaScript.
     new webpack.IgnorePlugin(/client\//, /shared/)
   ]
-  externals:
-    serverExternals()
+  externals: do ->
+    fs.readdirSync('node_modules')
+    .filter (m) -> m.match /^[a-z0-9-]+$/i;
+    .map (m) -> "#{m}": "commonjs #{m}"
+    .concat
+        'mz/fs': 'commonjs mz/fs'
 
 once = (f) -> done = no; -> (f.apply this, arguments; done = yes) unless done
 
