@@ -1,7 +1,7 @@
-const React = require('react');
+import React from 'react';
 
-const NavBar  = require('./nav-bar.jsx');
-const Content = require('./content.jsx');
+import NavBar  from './nav-bar.jsx';
+import Content from './content.jsx';
 
 /**
  * Component: Root
@@ -53,4 +53,4 @@ Root.propTypes = {
   initialContent: React.PropTypes.string.isRequired
 };
 
-module.exports = Root;
+export default Root;

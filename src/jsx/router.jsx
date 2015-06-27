@@ -1,6 +1,6 @@
-const React  = require('react');
-const Home   = require('./home.jsx');
-const About  = require('./about.jsx');
+import React from 'react';
+import Home  from './home.jsx';
+import About from './about.jsx';
 
 /**
  * Component: Router
@@ -50,4 +50,4 @@ Root.defaultProps = {
 //  });
 //};
 
-module.exports = Root;
+export default Root;

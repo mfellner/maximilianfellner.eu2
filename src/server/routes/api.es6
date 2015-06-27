@@ -1,6 +1,8 @@
-const router      = require('koa-router')();
-const contentCtrl = require('../controllers/content.es6');
+import Router     from 'koa-router';
+import { dbInfo } from '../controllers/content.es6';
 
-router.get('/api/db', contentCtrl.dbInfo);
+const router = Router();
 
-module.exports = router.routes();
+router.get('/api/db', dbInfo);
+
+export default router.routes();

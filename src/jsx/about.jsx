@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react';
 
 /**
  * Component: About
@@ -24,5 +24,4 @@ class About extends React.Component {
     /* jshint ignore:end */
   }
 }
-
-module.exports = About;
+export default About;

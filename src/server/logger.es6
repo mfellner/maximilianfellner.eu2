@@ -1,14 +1,22 @@
-const nconf = require('nconf');
-const winston = require('winston');
+import nconf   from 'nconf';
+import winston from 'winston';
 
-const production = nconf.get('NODE_ENV') === 'production';
+import config from './config.es6';
 
-module.exports = new winston.Logger({
-  transports: (function () {
-    if (production) {
-      return [new (winston.transports.Console)({level: 'info', timestamp: true})];
+export default new winston.Logger({
+  transports: (() => {
+    if (config.isProduction) {
+      return [new (winston.transports.Console)({
+        level    : 'info',
+        timestamp: true
+      })];
     } else {
-      return [new (winston.transports.Console)({level: 'debug', timestamp: true, colorize: true})];
+      return [new (winston.transports.Console)({
+        level      : 'debug',
+        timestamp  : true,
+        colorize   : true,
+        prettyPrint: true
+      })];
     }
-  }())
+  })()
 });

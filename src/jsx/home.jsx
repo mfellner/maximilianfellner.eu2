@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react';
 
 /**
  * Component: Home
@@ -25,4 +25,4 @@ class Home extends React.Component {
   }
 }
 
-module.exports = Home;
+export default Home;

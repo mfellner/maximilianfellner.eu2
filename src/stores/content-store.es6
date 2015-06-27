@@ -1,5 +1,5 @@
-const Store = require('./store.es6');
+import Store from './store.es6';
 
 class ContentStore extends Store {}
 
-module.exports = ContentStore;
+export default ContentStore;

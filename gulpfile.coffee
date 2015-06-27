@@ -67,7 +67,7 @@ clientConf =
         test: /\.(jsx|es6)$/, exclude: /node_modules/, loader: 'babel-loader',
         query:
           optional: ['runtime'],
-          stage: 0
+          stage   : 2
       }
     ]
   lessLoader:
@@ -116,7 +116,7 @@ serverConf =
         test: /\.(jsx|es6)$/, exclude: /node_modules/, loader: 'babel-loader',
         query:
           optional: ['runtime'],
-          stage: 0
+          stage   : 2
       }
     ]
   plugins: [

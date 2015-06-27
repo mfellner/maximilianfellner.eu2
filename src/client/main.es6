@@ -1,19 +1,18 @@
-require('bootstrap/less/bootstrap.less');
-require('babel/polyfill');
+import 'bootstrap/less/bootstrap.less';
 
-const React = require('react');
+import React from 'react';
 
-const db             = require('../shared/database.es6');
-const config         = require('./config.es6');
-const NavActions     = require('../actions/nav-actions.es6');
-const ContentActions = require('../actions/content-actions.es6');
-const RouteStore     = require('../stores/route-store.es6');
-const ContentStore   = require('../stores/content-store.es6');
-
-const Root = React.createFactory(require('../jsx/root.jsx'));
+import db             from '../shared/database.es6';
+import config         from './config.es6';
+import NavActions     from '../actions/nav-actions.es6';
+import ContentActions from '../actions/content-actions.es6';
+import RouteStore     from '../stores/route-store.es6';
+import ContentStore   from '../stores/content-store.es6';
+import root           from '../jsx/root.jsx';
 
 const routeStore   = new RouteStore();
 const contentStore = new ContentStore();
+const Root         = React.createFactory(root);
 
 // Wire up the stores with the actions.
 routeStore.registerActions(NavActions);

@@ -1,17 +1,15 @@
-const koa    = require('koa');
-const router = require('koa-router');
-const serve  = require('koa-static');
-const co     = require('co');
-const path   = require('path');
-const nconf  = require('nconf')
-  .argv()
-  .env()
-  .file({file: 'config.json'});
+import koa    from 'koa';
+import router from 'koa-router';
+import serve  from 'koa-static';
+import co     from 'co';
+import path   from 'path';
 
-const logger = require('../shared/logger.es6');
+import config from './config.es6';
+import logger from './logger.es6';
 
-const indexRoute = require('./routes/index.es6');
-const apiRoute   = require('./routes/api.es6');
+import { init as initIndexRoutes } from './routes/index.es6';
+import { init as initDB }          from './db-init.es6';
+import apiRoute                    from './routes/api.es6';
 
 function* koaLog(next) {
   const start = new Date();
@@ -20,36 +18,31 @@ function* koaLog(next) {
   logger.log('debug', '%s %s %d - %s ms', this.method, this.url, this.status, ms);
 }
 
-function*initKoa() {
+function* initKoa() {
   try {
-    // Initialize the database with static content.
-    yield require('./db-init.es6').init();
+    yield initDB();
   } catch (e) {
     logger.log('error', '[SERVER] cannot initialize database', e)
   }
 
   return koa()
     .use(koaLog)
-    .use(yield indexRoute.init())
+    .use(yield initIndexRoutes())
     .use(apiRoute)
     .use(router().allowedMethods())
-    .use(serve(nconf.get('STATIC_DIR'), {
+    .use(serve(config.staticDir, {
       defer: true
     }));
 }
 
-function*appRun() {
-  const app = yield initKoa();
-  app.listen(nconf.get('APP_PORT'));
-
-  logger.log('info', '[SERVER] running app in %s mode', app.env);
-  logger.log('info', '[SERVER] listening on port %s', nconf.get('APP_PORT'));
-}
-
-const errorLog = e => logger.log('error', '[SERVER]', e);
+const app = co(initKoa).catch(e => logger.log('error', '[SERVER]', e));
 
 if (require.main === module) {
-  co(appRun).catch(errorLog);
-} else {
-  module.exports = co(initKoa).catch(errorLog);
+  app.then(a => {
+    a.listen(config.appPort);
+    logger.log('info', '[SERVER] running app in %s mode', a.env);
+    logger.log('info', '[SERVER] listening on port %s', config.appPort);
+  })
 }
+
+export default app;

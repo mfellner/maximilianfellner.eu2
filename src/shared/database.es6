@@ -1,8 +1,8 @@
-const PouchDB  = require('pouchdb');
+import PouchDB  from 'pouchdb';
 
-const logger   = require('./logger.es6');
-const config   = require('./config.es6');
-const isomorph = require('../util/isomorph.es6');
+import logger   from './logger.es6';
+import config   from './config.es6';
+import isomorph from '../util/isomorph.es6';
 
 /**
  * Helper function to populate the database with
@@ -85,4 +85,4 @@ exportedDB.info().then(result => {
   logger.log('error', '[PouchDB]', err);
 });
 
-module.exports = exportedDB;
+export default exportedDB;

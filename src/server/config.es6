@@ -1,6 +1,11 @@
-const glob  = require('glob');
-const path  = require('path');
-const nconf = require('nconf');
+import glob  from 'glob';
+import path  from 'path';
+import nconf from 'nconf';
+
+nconf
+  .argv()
+  .env()
+  .file({file: 'config.json'});
 
 const production = nconf.get('NODE_ENV') === 'production';
 const staticDir  = nconf.get('STATIC_DIR');
@@ -23,7 +28,10 @@ const appPublicURL     = `${nconf.get('APP_PUBLIC_URL')}:${nconf.get('APP_PUBLIC
 
 const cdnURL = 'https://cdnjs.cloudflare.com';
 
-const config = Object.freeze({
+export default Object.freeze({
+  isProduction    : production,
+  appPort         : nconf.get('APP_PORT'),
+  staticDir       : nconf.get('STATIC_DIR'),
   dbName          : dbName,
   dbUser          : nconf.get('COUCHDB_ADMIN_NAME'),
   dbPass          : nconf.get('COUCHDB_ADMIN_PASS'),
@@ -43,5 +51,3 @@ const config = Object.freeze({
     return this.externalScripts.concat(this.scripts);
   }
 });
-
-module.exports = config;

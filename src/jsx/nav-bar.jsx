@@ -1,9 +1,9 @@
-const React    = require('react');
-const director = require('director');
+import React    from 'react';
+import director from 'director';
 
-const Observables     = require('../util/observables.es6');
-const NavActions      = require('../actions/nav-actions.es6');
-const ContentActions  = require('../actions/content-actions.es6');
+import Observables    from '../util/observables.es6';
+import NavActions     from '../actions/nav-actions.es6';
+import ContentActions from '../actions/content-actions.es6';
 
 /**
  * Component: NavBar
@@ -62,4 +62,4 @@ NavBar.defaultProps = {
   router: new director.Router()
 };
 
-module.exports = NavBar;
+export default NavBar;

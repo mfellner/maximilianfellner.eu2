@@ -1,4 +1,4 @@
-const Rx = require('rx');
+import Rx from 'rx';
 
 const Observables = {};
 
@@ -40,4 +40,4 @@ Observables.fromCallback = (fn, context = undefined, selector = null) => {
   };
 };
 
-module.exports = Observables;
+export default Observables;

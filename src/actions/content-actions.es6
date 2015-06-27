@@ -1,6 +1,6 @@
-const Rx         = require('rx');
-const changeCase = require('change-case');
-const db         = require('../shared/database.es6');
+import Rx         from 'rx';
+import changeCase from 'change-case';
+import db         from '../shared/database.es6';
 
 class ContentActions {
   static register(updates) {
@@ -17,4 +17,4 @@ class ContentActions {
 
 ContentActions.get = new Rx.Subject();
 
-module.exports = ContentActions;
+export default ContentActions;

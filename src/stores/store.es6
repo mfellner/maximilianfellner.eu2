@@ -1,4 +1,4 @@
-const Rx = require('rx');
+import Rx from 'rx';
 
 class Store {
 
@@ -59,4 +59,4 @@ class Store {
   }
 }
 
-module.exports = Store;
+export default Store;

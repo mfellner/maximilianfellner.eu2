@@ -1,5 +1,5 @@
-const db = require('../../shared/database.es6');
+import db from '../../shared/database.es6';
 
-module.exports.dbInfo = function*() {
+export function* dbInfo() {
   return this.body = yield db.info();
-};
+}

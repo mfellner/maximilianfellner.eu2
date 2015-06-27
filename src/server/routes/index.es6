@@ -1,22 +1,24 @@
-const router = require('koa-router')();
-const React  = require('react');
-const Rx     = require('rx');
-const moment = require('moment');
-const uuid   = require('node-uuid');
-const changeCase = require('change-case');
+import Router from 'koa-router';
+import React  from 'react';
+import Rx     from 'rx';
+import moment from 'moment';
+import uuid   from 'node-uuid';
+import changeCase from 'change-case';
 
-const db     = require('../../shared/database.es6');
-const config = require('../config.es6');
-const logger = require('../../shared/logger.es6');
+import db     from '../../shared/database.es6';
+import config from '../config.es6';
+import logger from '../../shared/logger.es6';
+import body   from '../../jsx/body.jsx';
 
-const Body = React.createFactory(require('../../jsx/body.jsx'));
+const router = Router();
+const Body = React.createFactory(body);
 
 /**
  * Initialize the index route for all navigation routes.
  *
  * @returns {Object} Koa router routes.
  */
-function* initRoutes() {
+export function* init() {
   const routes = yield db.get('routes');
 
   // Set content response for all navigable route paths.
@@ -78,5 +80,3 @@ function contentResponse(navRoutes) {
     this.body = yield new Promise(resolve => resolve(React.renderToStaticMarkup(Body(props))));
   };
 }
-
-module.exports.init = initRoutes;

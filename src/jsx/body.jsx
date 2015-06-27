@@ -1,5 +1,7 @@
-const React = require('react');
-const Root  = React.createFactory(require('./root.jsx'));
+import React from 'react';
+import root  from './root.jsx';
+
+const Root = React.createFactory(root);
 
 /**
  * Component: Body
@@ -55,4 +57,4 @@ Body.defaultProps = {
   scripts: []
 };
 
-module.exports = Body;
+export default Body;

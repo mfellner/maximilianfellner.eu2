@@ -1,5 +1,5 @@
-const React    = require('react');
-const showdown = require('showdown');
+import React    from 'react';
+import showdown from 'showdown';
 
 /**
  * Component: Content
@@ -30,4 +30,4 @@ Content.defaultProps = {
   converter: new showdown.Converter()
 };
 
-module.exports = Content;
+export default Content;

@@ -1,4 +1,4 @@
-const Rx = require('rx');
+import Rx from 'rx';
 
 class NavActions {
   static register(updates) {
@@ -14,4 +14,4 @@ class NavActions {
 
 NavActions.navigateTo = new Rx.Subject();
 
-module.exports = NavActions;
+export default NavActions;
