@@ -11,7 +11,7 @@ machine:
 
 dependencies:
   override:
-    - sudo pip install --upgrade docker-compose
+    - sudo pip install -U docker-compose==1.3.1
     - npm install
     - ./node_modules/.bin/gulp build --production
     - if [[ -e ~/docker/cci_app.tar ]]; then docker load -i ~/docker/cci_app.tar; fi
